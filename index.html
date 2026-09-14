@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akademia — School Management for Ghanaian Schools</title>
+  <meta name="description" content="Akademia is a modern school management platform built for Ghanaian Primary, JHS, and SHS schools. Attendance, fees, grading, report cards, and more — all in one beautiful desktop app." />
+  <meta property="og:title" content="Akademia — School Management Made Simple" />
+  <meta property="og:description" content="Built for Ghana. Attendance, fees, grading, report cards, and communications — in one powerful desktop app." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #1a1a2e;
+      --ink-soft:  #4a4a6a;
+      --ink-muted: #8888aa;
+      --cream:     #faf8f5;
+      --warm:      #f5f0ea;
+      --gold:      #c9a84c;
+      --gold-lt:   #e8d5a3;
+      --gold-dk:   #a07830;
+      --sage:      #6b8f71;
+      --sage-lt:   #d4e6d6;
+      --card:      #ffffff;
+      --border:    #e8e3db;
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(250,248,245,0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1.5rem, 5vw, 6rem);
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; color: var(--ink); text-decoration: none;
+    }
+    .nav-logo svg { width: 32px; height: 32px; }
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--ink-soft); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--ink); color: #fff !important;
+      padding: 0.5rem 1.25rem; border-radius: 50px;
+      font-size: 0.875rem; font-weight: 500;
+      transition: background .2s, transform .15s !important;
+    }
+    .nav-cta:hover { background: var(--gold-dk) !important; transform: translateY(-1px); }
+
+    /* ── SECTIONS ── */
+    section { scroll-margin-top: 68px; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 0 100px;
+      background: linear-gradient(160deg, var(--cream) 0%, var(--warm) 60%, #ede8e0 100%);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--gold-lt); color: var(--gold-dk);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 2rem;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1.12; color: var(--ink);
+      max-width: 800px; margin: 0 auto 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold-dk); }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem); color: var(--ink-soft);
+      max-width: 600px; margin: 0 auto 2.5rem;
+      font-weight: 300;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--ink); color: #fff;
+      padding: 0.875rem 2rem; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none; display: inline-block;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(26,26,46,0.18);
+    }
+    .btn-primary:hover { background: var(--gold-dk); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(160,120,48,0.25); }
+    .btn-outline {
+      background: transparent; color: var(--ink);
+      padding: 0.875rem 2rem; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none; display: inline-block;
+      border: 1.5px solid var(--border);
+      transition: border-color .2s, transform .15s;
+    }
+    .btn-outline:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+    .hero-mockup {
+      margin: 4rem auto 0;
+      max-width: 900px;
+      border-radius: 20px;
+      box-shadow: 0 32px 80px rgba(26,26,46,0.14), 0 0 0 1px var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-mockup-bar {
+      background: #f0ece6; padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-dot:nth-child(1) { background: #fc5c5c; }
+    .mockup-dot:nth-child(2) { background: #fdb435; }
+    .mockup-dot:nth-child(3) { background: #36c25e; }
+    .mockup-url {
+      flex: 1; background: #e8e3db; border-radius: 6px;
+      padding: 4px 12px; font-size: 0.73rem; color: var(--ink-muted);
+      margin: 0 16px; font-family: monospace;
+    }
+
+    /* Dashboard preview built in CSS / SVG */
+    .app-preview {
+      background: #f8f6f2;
+      min-height: 420px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+    }
+    .app-sidebar {
+      background: var(--ink);
+      padding: 1.5rem 1rem;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .sidebar-brand {
+      font-family: 'DM Serif Display', serif;
+      color: #fff; font-size: 1.1rem; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sidebar-brand svg { opacity: 0.8; }
+    .sidebar-item {
+      padding: 8px 12px; border-radius: 8px;
+      font-size: 0.78rem; color: rgba(255,255,255,0.55);
+      display: flex; align-items: center; gap: 8px;
+      cursor: default;
+    }
+    .sidebar-item.active {
+      background: rgba(201,168,76,0.18); color: var(--gold-lt);
+    }
+    .sidebar-item svg { width: 14px; height: 14px; opacity: 0.7; }
+    .app-main { padding: 1.5rem 2rem; }
+    .app-main-header {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; color: var(--ink); margin-bottom: 1.25rem;
+    }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.25rem;
+    }
+    .stat-label { font-size: 0.72rem; color: var(--ink-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--ink); }
+    .stat-sub { font-size: 0.72rem; color: var(--sage); margin-top: 2px; }
+    .app-table { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .table-head { background: var(--warm); padding: 10px 16px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 0.8fr; gap: 1rem; }
+    .th { font-size: 0.72rem; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .table-row { padding: 10px 16px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 0.8fr; gap: 1rem; align-items: center; border-top: 1px solid var(--border); }
+    .td { font-size: 0.8rem; color: var(--ink-soft); }
+    .td.name { color: var(--ink); font-weight: 500; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 600; }
+    .badge.present { background: var(--sage-lt); color: var(--sage); }
+    .badge.absent { background: #ffe4e4; color: #c0392b; }
+    .badge.paid { background: #d4edda; color: #2d7a47; }
+    .badge.withheld { background: var(--gold-lt); color: var(--gold-dk); }
+
+    /* ── SECTION HELPERS ── */
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gold-dk);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--ink); line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--ink-soft); font-weight: 300;
+      max-width: 560px;
+    }
+
+    /* ── FEATURES ── */
+    .features { padding: 100px 0; background: var(--card); }
+    .features-intro { margin-bottom: 4rem; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(26,26,46,0.08); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.4rem;
+    }
+    .fi-gold  { background: var(--gold-lt); }
+    .fi-sage  { background: var(--sage-lt); }
+    .fi-ink   { background: #e0def5; }
+    .fi-rose  { background: #fde8e8; }
+    .fi-sky   { background: #def0fa; }
+    .fi-mint  { background: #def5ec; }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
+    .feature-card p  { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.65; }
+
+    /* ── HOW IT WORKS ── */
+    .how { padding: 100px 0; background: var(--warm); }
+    .how-steps {
+      display: grid; gap: 0;
+      max-width: 800px; margin: 3rem auto 0;
+      position: relative;
+    }
+    .how-steps::before {
+      content: '';
+      position: absolute; left: 27px; top: 28px; bottom: 28px; width: 2px;
+      background: linear-gradient(to bottom, var(--gold-lt), var(--border));
+    }
+    .step {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      padding: 1.5rem 0;
+    }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--card); border: 2px solid var(--gold-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem; color: var(--gold-dk); flex-shrink: 0;
+      position: relative; z-index: 1;
+    }
+    .step-body h3 { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.35rem; padding-top: 14px; }
+    .step-body p  { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.65; }
+
+    /* ── ROLES ── */
+    .roles { padding: 100px 0; background: var(--card); }
+    .roles-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem; margin-top: 3rem;
+    }
+    .role-card {
+      border-radius: var(--radius); padding: 2.5rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .role-card.superadmin { background: var(--ink); color: #fff; }
+    .role-card.schooladmin { background: linear-gradient(140deg, #fff8ee, #fff3da); border: 1px solid var(--gold-lt); }
+    .role-card.staff { background: linear-gradient(140deg, #f0f8f1, #e2f0e4); border: 1px solid var(--sage-lt); }
+    .role-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 50px; margin-bottom: 1rem;
+    }
+    .superadmin .role-tag { background: rgba(255,255,255,0.12); color: var(--gold-lt); }
+    .schooladmin .role-tag { background: var(--gold-lt); color: var(--gold-dk); }
+    .staff .role-tag { background: var(--sage-lt); color: var(--sage); }
+    .role-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .superadmin h3 { color: #fff; }
+    .schooladmin h3, .staff h3 { color: var(--ink); }
+    .role-card p { font-size: 0.88rem; line-height: 1.7; margin-bottom: 1.25rem; }
+    .superadmin p { color: rgba(255,255,255,0.7); }
+    .schooladmin p, .staff p { color: var(--ink-soft); }
+    .role-perms { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .role-perms li { font-size: 0.82rem; display: flex; align-items: center; gap: 8px; }
+    .superadmin .role-perms li { color: rgba(255,255,255,0.75); }
+    .schooladmin .role-perms li, .staff .role-perms li { color: var(--ink-soft); }
+    .role-perms li::before { content: '✓'; font-weight: 700; flex-shrink: 0; }
+    .superadmin .role-perms li::before { color: var(--gold-lt); }
+    .schooladmin .role-perms li::before { color: var(--gold); }
+    .staff .role-perms li::before { color: var(--sage); }
+
+    /* ── RESULT-FEE INTERCEPT HIGHLIGHT ── */
+    .intercept { padding: 80px 0; background: var(--warm); }
+    .intercept-inner {
+      background: var(--ink); border-radius: 24px;
+      padding: 4rem clamp(2rem, 5vw, 5rem);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    @media (max-width: 720px) {
+      .intercept-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    .intercept-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: 0.75rem; }
+    .intercept h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); color: #fff; margin-bottom: 1rem; }
+    .intercept p { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 1.5rem; }
+    .intercept-flow { display: flex; flex-direction: column; gap: 1rem; }
+    .flow-step {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .flow-step-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .flow-step-text { font-size: 0.85rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
+    .flow-step-text strong { color: #fff; display: block; font-size: 0.88rem; margin-bottom: 2px; }
+
+    /* ── SEE IT IN ACTION ── */
+    .action { padding: 100px 0; background: var(--card); }
+    .action-intro { text-align: center; margin-bottom: 4rem; }
+    .screens-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .screen-card {
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(26,26,46,0.06);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .screen-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(26,26,46,0.12); }
+    .screen-preview {
+      background: var(--ink);
+      height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 1.5rem;
+    }
+    /* Individual screen illustrations */
+    .screen-dashboard { background: linear-gradient(140deg, #1a1a2e, #2d2d52); }
+    .screen-students  { background: linear-gradient(140deg, #1e3a2e, #2d5240); }
+    .screen-fees      { background: linear-gradient(140deg, #3a2b0a, #5a4010); }
+    .screen-grades    { background: linear-gradient(140deg, #1a2a3a, #1e3d5c); }
+    .screen-comms     { background: linear-gradient(140deg, #2e1a2e, #4a2a4a); }
+    .screen-report    { background: linear-gradient(140deg, #1a2e2e, #1e4a4a); }
+
+    .screen-ui {
+      width: 100%; border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+    .sui-bar {
+      background: rgba(255,255,255,0.08); padding: 8px 12px;
+      font-size: 0.7rem; color: rgba(255,255,255,0.5);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .sui-body { padding: 10px 12px; }
+    .sui-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
+    .sui-box {
+      height: 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.15);
+    }
+    .sui-circle { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.12); flex-shrink: 0; }
+    .sui-pill {
+      height: 20px; border-radius: 10px; font-size: 0.6rem;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; padding: 0 8px; flex-shrink: 0;
+    }
+    .sui-pill.green  { background: rgba(107,143,113,0.4); color: #a8d8b0; }
+    .sui-pill.gold   { background: rgba(201,168,76,0.3); color: #e8d5a3; }
+    .sui-pill.red    { background: rgba(192,57,43,0.3); color: #f5a9a9; }
+
+    .screen-meta { padding: 1.25rem 1.5rem; }
+    .screen-meta h4 { font-size: 0.95rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .screen-meta p  { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.55; }
+
+    /* ── FAQ ── */
+    .faq { padding: 100px 0; background: var(--warm); }
+    .faq-intro { text-align: center; margin-bottom: 4rem; }
+    .faq-intro .section-sub { margin: 0 auto; }
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 1px; }
+    .faq-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 8px;
+    }
+    .faq-q {
+      width: 100%; background: none; border: none; cursor: pointer;
+      padding: 1.25rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 600; color: var(--ink);
+      text-align: left; gap: 1rem;
+    }
+    .faq-q:hover { background: var(--cream); }
+    .faq-chevron {
+      width: 20px; height: 20px; flex-shrink: 0;
+      border: 1.5px solid var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .25s, border-color .2s;
+      color: var(--ink-muted);
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); border-color: var(--gold); color: var(--gold-dk); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s ease, padding .3s ease;
+      padding: 0 1.5rem;
+    }
+    .faq-a-inner { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; padding-bottom: 1.25rem; }
+    .faq-item.open .faq-a { max-height: 500px; }
+
+    /* ── STORE BADGES ── */
+    .store { padding: 100px 0; background: var(--card); text-align: center; }
+    .store h2 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--ink); margin-bottom: 1rem; }
+    .store p { font-size: 1.05rem; color: var(--ink-soft); max-width: 500px; margin: 0 auto 3rem; font-weight: 300; }
+    .badges { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
+    .badge-btn {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--ink); color: #fff; border-radius: 14px;
+      padding: 14px 24px; text-decoration: none;
+      border: 1.5px solid var(--ink);
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(26,26,46,0.14);
+    }
+    .badge-btn:hover { background: #2d2d52; transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,26,46,0.18); }
+    .badge-btn.outline { background: transparent; color: var(--ink); }
+    .badge-btn.outline:hover { background: var(--warm); }
+    .badge-icon { font-size: 1.8rem; line-height: 1; }
+    .badge-text small { display: block; font-size: 0.68rem; font-weight: 500; opacity: 0.7; letter-spacing: 0.04em; text-transform: uppercase; }
+    .badge-text strong { display: block; font-size: 1rem; font-weight: 700; }
+    .coming-soon-note {
+      margin-top: 2rem; font-size: 0.82rem; color: var(--ink-muted);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.6);
+      padding: 4rem clamp(1.5rem, 5vw, 6rem) 2rem;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; max-width: 1180px; margin: 0 auto;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    @media (max-width: 760px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #fff; margin-bottom: 0.75rem; display: block; }
+    .footer-desc { font-size: 0.85rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h5 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul a { font-size: 0.88rem; color: rgba(255,255,255,0.55); text-decoration: none; transition: color .2s; }
+    .footer-col ul a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1180px; margin: 2rem auto 0; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: 0.8rem; }
+    .footer-bottom .made { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+
+    /* ── MISC ── */
+    .text-center { text-align: center; }
+    .divider { height: 1px; background: var(--border); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .6s ease forwards; }
+    .delay-1 { animation-delay: .1s; opacity: 0; }
+    .delay-2 { animation-delay: .2s; opacity: 0; }
+    .delay-3 { animation-delay: .3s; opacity: 0; }
+    .delay-4 { animation-delay: .4s; opacity: 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .app-preview { grid-template-columns: 1fr; }
+      .app-sidebar { display: none; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="8" fill="#1a1a2e"/>
+      <path d="M16 6L26 11V21L16 26L6 21V11L16 6Z" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+      <path d="M16 10L22 13.5V20.5L16 24L10 20.5V13.5L16 10Z" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.5"/>
+      <circle cx="16" cy="16" r="2.5" fill="#c9a84c"/>
+    </svg>
+    Akademia
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#action">See It In Action</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#store" class="nav-cta">Get the App</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="hero-badge fade-up"><span class="dot"></span> Built for Ghanaian Schools</div>
+    <h1 class="fade-up delay-1">School Management, <em>Finally Done Right</em></h1>
+    <p class="fade-up delay-2">Akademia brings attendance, fees, grading, report cards, and communications together in one elegant desktop application — designed from the ground up for Ghanaian Primary, JHS, and SHS schools.</p>
+    <div class="hero-btns fade-up delay-3">
+      <a href="#action" class="btn-primary">See It In Action</a>
+      <a href="#features" class="btn-outline">Explore Features</a>
+    </div>
+
+    <div class="hero-mockup fade-up delay-4">
+      <div class="hero-mockup-bar">
+        <div class="mockup-dot"></div>
+        <div class="mockup-dot"></div>
+        <div class="mockup-dot"></div>
+        <div class="mockup-url">akademia · Dashboard</div>
+      </div>
+
+      <!-- App dashboard preview (pure CSS) -->
+      <div class="app-preview">
+        <div class="app-sidebar">
+          <div class="sidebar-brand">
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><path d="M16 6L26 11V21L16 26L6 21V11L16 6Z" fill="none" stroke="#c9a84c" stroke-width="2"/><circle cx="16" cy="16" r="3" fill="#c9a84c"/></svg>
+            Akademia
+          </div>
+          <div class="sidebar-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Dashboard
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Students
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Attendance
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Fees
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            Grades
+          </div>
+          <div class="sidebar-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Comms
+          </div>
+        </div>
+        <div class="app-main">
+          <div class="app-main-header">Good morning, Mrs. Asante ☀️</div>
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-label">Students</div>
+              <div class="stat-value">312</div>
+              <div class="stat-sub">↑ 4 this term</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Attendance</div>
+              <div class="stat-value">94%</div>
+              <div class="stat-sub">Today · 293 present</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Fees Collected</div>
+              <div class="stat-value">₵48k</div>
+              <div class="stat-sub">↑ 12% vs last term</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Results</div>
+              <div class="stat-value">48</div>
+              <div class="stat-sub">Ready to publish</div>
+            </div>
+          </div>
+          <div class="app-table">
+            <div class="table-head">
+              <div class="th">Student</div>
+              <div class="th">Class</div>
+              <div class="th">Fees</div>
+              <div class="th">Attendance</div>
+            </div>
+            <div class="table-row">
+              <div class="td name">Abena Mensah</div>
+              <div class="td">JHS 2A</div>
+              <div class="td"><span class="badge paid">Paid</span></div>
+              <div class="td"><span class="badge present">Present</span></div>
+            </div>
+            <div class="table-row">
+              <div class="td name">Kwame Otibu</div>
+              <div class="td">JHS 2B</div>
+              <div class="td"><span class="badge withheld">Owing</span></div>
+              <div class="td"><span class="badge absent">Absent</span></div>
+            </div>
+            <div class="table-row">
+              <div class="td name">Efua Asare</div>
+              <div class="td">SHS 1</div>
+              <div class="td"><span class="badge paid">Paid</span></div>
+              <div class="td"><span class="badge present">Present</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-intro">
+      <div class="section-label">What Akademia Does</div>
+      <h2 class="section-title">Everything your school needs,<br>nothing it doesn't</h2>
+      <p class="section-sub">Built around how Ghanaian schools actually work — not a generic template adapted for Africa.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon fi-gold">🏫</div>
+        <h3>Multi-School Architecture</h3>
+        <p>Each school runs as a fully isolated tenant. Student records, fees, and grades from one school are never visible to another. One platform, many schools, zero data leaks.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-sage">👥</div>
+        <h3>Role-Based Access Control</h3>
+        <p>Three clear roles — Platform Admin, School Admin, and Staff (Teachers). Each person sees exactly what they need: teachers only access their assigned classes and subjects.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-ink">📋</div>
+        <h3>Student Records</h3>
+        <p>Admission numbers, personal details, guardian contacts, class enrolments, and photo uploads. Bulk CSV import for large intakes. Clean admission codes (e.g., VIS-001).</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-sky">📅</div>
+        <h3>Daily Attendance</h3>
+        <p>Mark students Present, Absent, or Tardy per day. Admins get a bird's-eye attendance overview. Teachers only see the classes assigned to them — no accidental edits.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-gold">💰</div>
+        <h3>Fee Management</h3>
+        <p>Define fee structures per term. Track charges and payments per student. Paystack integration for online payments with webhook + polling verification. Auto-notifications when fees are cleared.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-rose">📊</div>
+        <h3>Multi-Component Grading</h3>
+        <p>CA (30%), Mid-term (20%), End-of-term Exam (50%) — computed automatically. Bulk grade entry per class. Finalization lock so grades can't be changed after closing. Configurable grade bands.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-mint">📄</div>
+        <h3>Report Cards & PDF Generation</h3>
+        <p>Auto-generated PDF report cards per student per term. Cards are held in WITHHELD state until all fees are cleared — the Result-Fee Intercept. Released cards are sent to guardians automatically.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-gold">💬</div>
+        <h3>Email & SMS Communications</h3>
+        <p>Templated messages sent over Email (Resend) and SMS (Arkesel — Ghana numbers). Notify parents about attendance, fee receipts, and report card releases. Every dispatch is logged.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-ink">🔐</div>
+        <h3>Subscriptions & Licensing</h3>
+        <p>Per-school subscription with configurable grace periods. Expired-but-in-grace schools get read-only access. Fully expired schools are locked out — and can renew through Paystack directly in the app.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-sage">🏷️</div>
+        <h3>Human-Readable Codes</h3>
+        <p>No UUIDs shown to users. Every entity has a clean, meaningful code — school initials (VIS), admission numbers (VIS-001), teacher access codes (T-AO-ENGLP2-JHS2A). Professional and intuitive.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-rose">📝</div>
+        <h3>Audit Log</h3>
+        <p>Every significant action records an actor, action type, target, and timestamp — giving schools a tamper-evident administrative history for accountability and compliance.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon fi-sky">🖥️</div>
+        <h3>Native Desktop App (Tauri)</h3>
+        <p>Packaged as a native Windows .exe installer via Tauri. Works offline for core functions. No browser required — a real, installable desktop application. Coming soon to Microsoft Store.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From setup to running<br>in under an hour</h2>
+
+    <div class="how-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>School registers and gets onboarded</h3>
+          <p>The Platform Admin creates a school tenant with a unique code (e.g., VIS for Vilaworld International School), sets the subscription plan, and creates the School Admin account. The school is live immediately.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Admin sets up classes, subjects, and staff</h3>
+          <p>The School Admin creates academic years, terms, class divisions (JHS 2A, JHS 2B, SHS 1…), subjects, and staff accounts. Teachers are assigned specific class-subject combinations so they only see what's relevant to them.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Students are enrolled (bulk or one by one)</h3>
+          <p>Import students from a CSV or add them individually. Akademia assigns clean admission numbers automatically. Guardians are linked to students for notifications. Students are enrolled into classes per term.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Daily operations begin — attendance, grades, fees</h3>
+          <p>Teachers mark attendance each morning. Grades are entered at end of assessment periods. Fee payments are recorded as they come in. Everything updates in real-time across the admin dashboard.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h3>Report cards generated and released</h3>
+          <p>At end of term, the Admin publishes results. The Result-Fee Intercept holds cards for students with outstanding fees. Once cleared, PDFs are generated and dispatched to guardians via email and SMS automatically.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ ROLES ══════════════════ -->
+<section class="roles" id="roles">
+  <div class="container">
+    <div class="section-label">Three Roles, One System</div>
+    <h2 class="section-title">Everyone has exactly<br>the access they need</h2>
+    <div class="roles-grid">
+
+      <div class="role-card superadmin">
+        <div class="role-tag">Platform Admin</div>
+        <h3>Super Admin</h3>
+        <p>The platform owner. Manages all schools, subscriptions, and has a bird's-eye view of every tenant on the system.</p>
+        <ul class="role-perms">
+          <li>Create and manage school tenants</li>
+          <li>Set subscription plans and expiry</li>
+          <li>View platform-wide audit logs</li>
+          <li>Onboard new School Admins</li>
+          <li>Monitor subscription health</li>
+        </ul>
+      </div>
+
+      <div class="role-card schooladmin">
+        <div class="role-tag">School Admin</div>
+        <h3>School Administrator</h3>
+        <p>The principal or administrator of a single school. Full control over their school's data, staff, and operations.</p>
+        <ul class="role-perms">
+          <li>Manage students and enrolments</li>
+          <li>Manage staff and class assignments</li>
+          <li>Set up fee structures and record payments</li>
+          <li>Publish and withhold report cards</li>
+          <li>Send communications to guardians</li>
+          <li>View attendance and grade overviews</li>
+        </ul>
+      </div>
+
+      <div class="role-card staff">
+        <div class="role-tag">Teacher / Staff</div>
+        <h3>Staff Member</h3>
+        <p>A teacher assigned to specific classes and subjects. Clean, focused interface — no clutter from areas they don't own.</p>
+        <ul class="role-perms">
+          <li>Mark daily attendance for assigned classes</li>
+          <li>Enter grades for assigned subjects</li>
+          <li>View their subject & class assignments</li>
+          <li>PIN-gated secure grade entry</li>
+          <li>Self-service PIN reset</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RESULT-FEE INTERCEPT ══════════════════ -->
+<section class="intercept">
+  <div class="container">
+    <div class="intercept-inner">
+      <div>
+        <div class="intercept-label">Signature Feature</div>
+        <h2>The Result-Fee Intercept</h2>
+        <p>The most powerful financial tool in Akademia. Report cards are automatically withheld until a student's outstanding fee balance reaches zero. No manual tracking. No awkward conversations. The system handles it.</p>
+        <p>The moment a payment clears through Paystack, the card is released — the PDF is generated, uploaded, and the guardian is notified by both email and SMS. Instantly.</p>
+      </div>
+      <div class="intercept-flow">
+        <div class="flow-step">
+          <div class="flow-step-icon">🎓</div>
+          <div class="flow-step-text"><strong>Exam scores finalized</strong>Report card is generated and placed in WITHHELD state</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-icon">💸</div>
+          <div class="flow-step-text"><strong>Guardian makes payment</strong>Paystack webhook confirms payment in real-time</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-icon">✅</div>
+          <div class="flow-step-text"><strong>Balance clears</strong>System automatically triggers report card release</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-icon">📧</div>
+          <div class="flow-step-text"><strong>Notification sent</strong>Guardian receives email + SMS with PDF download link</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SEE IT IN ACTION ══════════════════ -->
+<section class="action" id="action">
+  <div class="container">
+    <div class="action-intro">
+      <div class="section-label">See It In Action</div>
+      <h2 class="section-title">A look inside Akademia</h2>
+      <p class="section-sub" style="margin: 0 auto;">Every screen is purpose-built. Clean, fast, and focused — so administrators and teachers can get their work done without friction.</p>
+    </div>
+
+    <div class="screens-grid">
+
+      <div class="screen-card">
+        <div class="screen-preview screen-dashboard">
+          <div class="screen-ui">
+            <div class="sui-bar"><span>Admin Dashboard</span><span>JHS · Term 1</span></div>
+            <div class="sui-body">
+              <div class="sui-row">
+                <div class="sui-box" style="width:40%;background:rgba(201,168,76,0.4)"></div>
+                <div class="sui-box" style="width:25%;background:rgba(107,143,113,0.4)"></div>
+                <div class="sui-box" style="width:30%;background:rgba(255,255,255,0.1)"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0">
+                <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px;border:1px solid rgba(255,255,255,0.08)">
+                  <div class="sui-box" style="width:60%;height:6px;background:rgba(255,255,255,0.15);margin-bottom:4px"></div>
+                  <div style="color:#c9a84c;font-size:1.1rem;font-weight:700">312</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px;border:1px solid rgba(255,255,255,0.08)">
+                  <div class="sui-box" style="width:60%;height:6px;background:rgba(255,255,255,0.15);margin-bottom:4px"></div>
+                  <div style="color:#a8d8b0;font-size:1.1rem;font-weight:700">94%</div>
+                </div>
+              </div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:70%;margin-bottom:3px"></div><div class="sui-box" style="width:45%"></div></div><span class="sui-pill green">Present</span></div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:60%;margin-bottom:3px"></div><div class="sui-box" style="width:40%"></div></div><span class="sui-pill gold">Owing</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-meta">
+          <h4>Admin Dashboard</h4>
+          <p>At-a-glance overview of students, attendance rate, fee collections, and pending results. Real-time data, no refresh needed.</p>
+        </div>
+      </div>
+
+      <div class="screen-card">
+        <div class="screen-preview screen-students">
+          <div class="screen-ui">
+            <div class="sui-bar"><span>Students</span><span>+ Add Student</span></div>
+            <div class="sui-body">
+              <div class="sui-row" style="margin-bottom:8px">
+                <div class="sui-box" style="flex:1;height:22px;border-radius:6px;background:rgba(255,255,255,0.08)"></div>
+                <div class="sui-box" style="width:60px;height:22px;border-radius:6px;background:rgba(107,143,113,0.3)"></div>
+              </div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:55%;margin-bottom:3px"></div><div class="sui-box" style="width:35%"></div></div><span class="sui-pill green">JHS 2A</span></div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:65%;margin-bottom:3px"></div><div class="sui-box" style="width:40%"></div></div><span class="sui-pill green">JHS 2B</span></div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:50%;margin-bottom:3px"></div><div class="sui-box" style="width:30%"></div></div><span class="sui-pill gold">SHS 1</span></div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:60%;margin-bottom:3px"></div><div class="sui-box" style="width:38%"></div></div><span class="sui-pill green">Primary 6</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-meta">
+          <h4>Student Records</h4>
+          <p>Searchable student list with admission codes, guardian info, class enrolment, and bulk CSV import for large intakes.</p>
+        </div>
+      </div>
+
+      <div class="screen-card">
+        <div class="screen-preview screen-fees">
+          <div class="screen-ui">
+            <div class="sui-bar"><span>Fee Management</span><span>Term 1, 2026</span></div>
+            <div class="sui-body">
+              <div style="display:flex;gap:6px;margin-bottom:8px">
+                <div style="flex:1;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:6px;text-align:center">
+                  <div style="color:#e8d5a3;font-size:0.65rem;margin-bottom:2px">COLLECTED</div>
+                  <div style="color:#c9a84c;font-weight:700;font-size:0.9rem">₵48,200</div>
+                </div>
+                <div style="flex:1;background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.15);border-radius:8px;padding:6px;text-align:center">
+                  <div style="color:#f5a9a9;font-size:0.65rem;margin-bottom:2px">OUTSTANDING</div>
+                  <div style="color:#fc9090;font-weight:700;font-size:0.9rem">₵12,500</div>
+                </div>
+              </div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:60%;margin-bottom:3px"></div><div class="sui-box" style="width:40%"></div></div><span class="sui-pill green">Paid</span></div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:55%;margin-bottom:3px"></div><div class="sui-box" style="width:35%"></div></div><span class="sui-pill red">Owing</span></div>
+              <div class="sui-row"><div class="sui-circle"></div><div style="flex:1"><div class="sui-box" style="width:65%;margin-bottom:3px"></div><div class="sui-box" style="width:45%"></div></div><span class="sui-pill gold">Partial</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-meta">
+          <h4>Fee Management</h4>
+          <p>Track every fee structure, payment, and outstanding balance per student. Paystack integration for seamless online collection.</p>
+        </div>
+      </div>
+
+      <div class="screen-card">
+        <div class="screen-preview screen-grades">
+          <div class="screen-ui">
+            <div class="sui-bar"><span>Grade Entry · JHS 2A · English</span></div>
+            <div class="sui-body">
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:4px;margin-bottom:6px">
+                <div style="font-size:0.6rem;color:rgba(255,255,255,0.4)">Student</div>
+                <div style="font-size:0.6rem;color:rgba(255,255,255,0.4)">CA</div>
+                <div style="font-size:0.6rem;color:rgba(255,255,255,0.4)">Exam</div>
+                <div style="font-size:0.6rem;color:rgba(255,255,255,0.4)">Total</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:4px;margin-bottom:4px;align-items:center">
+                <div class="sui-box" style="width:80%;height:7px"></div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:16px;border:1px solid rgba(255,255,255,0.15)"></div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:16px;border:1px solid rgba(255,255,255,0.15)"></div>
+                <div class="sui-pill green" style="font-size:0.65rem">A1</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:4px;margin-bottom:4px;align-items:center">
+                <div class="sui-box" style="width:75%;height:7px"></div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:16px;border:1px solid rgba(255,255,255,0.15)"></div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:16px;border:1px solid rgba(255,255,255,0.15)"></div>
+                <div class="sui-pill gold" style="font-size:0.65rem">B2</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:4px;align-items:center">
+                <div class="sui-box" style="width:70%;height:7px"></div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:16px;border:1px solid rgba(255,255,255,0.15)"></div>
+                <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:16px;border:1px solid rgba(255,255,255,0.15)"></div>
+                <div class="sui-pill green" style="font-size:0.65rem">A2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-meta">
+          <h4>Grade Entry</h4>
+          <p>Bulk grade entry for CA, Mid-term, and Exam components. Weighted aggregate computed automatically. Finalization lock prevents post-close changes.</p>
+        </div>
+      </div>
+
+      <div class="screen-card">
+        <div class="screen-preview screen-comms">
+          <div class="screen-ui">
+            <div class="sui-bar"><span>Communications</span><span>Send Message</span></div>
+            <div class="sui-body">
+              <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.1)">
+                <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);margin-bottom:4px">📧 EMAIL · SMS ✓</div>
+                <div class="sui-box" style="width:85%;margin-bottom:4px;height:7px"></div>
+                <div class="sui-box" style="width:65%;height:6px"></div>
+              </div>
+              <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px;border:1px solid rgba(255,255,255,0.1)">
+                <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);margin-bottom:4px">📧 EMAIL · SMS ✓</div>
+                <div class="sui-box" style="width:90%;margin-bottom:4px;height:7px"></div>
+                <div class="sui-box" style="width:55%;height:6px"></div>
+              </div>
+              <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
+                <span class="sui-pill green">128 Sent</span>
+                <span class="sui-pill red">3 Failed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-meta">
+          <h4>Communications Hub</h4>
+          <p>Send templated Email and SMS messages to parents and guardians. Fee reminders, attendance alerts, and result release notifications — all logged.</p>
+        </div>
+      </div>
+
+      <div class="screen-card">
+        <div class="screen-preview screen-report">
+          <div class="screen-ui">
+            <div class="sui-bar"><span>Report Cards · Term 1</span></div>
+            <div class="sui-body">
+              <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.1);margin-bottom:6px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <div class="sui-box" style="width:50%;height:7px"></div>
+                  <span class="sui-pill green" style="font-size:0.6rem">RELEASED</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
+                  <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:4px;text-align:center"><div style="color:#a8d8b0;font-size:0.75rem;font-weight:700">A1</div></div>
+                  <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:4px;text-align:center"><div style="color:#a8d8b0;font-size:0.75rem;font-weight:700">B2</div></div>
+                  <div style="background:rgba(255,255,255,0.08);border-radius:4px;padding:4px;text-align:center"><div style="color:#e8d5a3;font-size:0.75rem;font-weight:700">B3</div></div>
+                </div>
+              </div>
+              <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:8px;border:1px solid rgba(192,57,43,0.2)">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div class="sui-box" style="width:50%;height:7px"></div>
+                  <span class="sui-pill red" style="font-size:0.6rem">WITHHELD</span>
+                </div>
+                <div style="font-size:0.65rem;color:rgba(255,150,150,0.7);margin-top:4px">Fees outstanding · ₵850</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-meta">
+          <h4>Report Card Management</h4>
+          <p>Auto-generated PDF report cards. WITHHELD until fees clear. One-click publish releases all cleared cards and notifies guardians instantly.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq-intro">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">Questions we've been asked</h2>
+      <p class="section-sub">Everything you need to know before getting started.</p>
+    </div>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What types of schools is Akademia designed for?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Akademia is built specifically for Ghanaian Primary, JHS (Junior High School), and SHS (Senior High School) schools. The grading system, curriculum structure, terminology, and integrations (Paystack for fees, Arkesel for SMS) are all tailored to how Ghanaian schools operate — not a generic global template adapted for Africa.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How does the Result-Fee Intercept work exactly?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">When grades are finalized for a term, Akademia generates a report card PDF for each student and places it in a WITHHELD state. It stays withheld until the student's full fee balance for that term is paid. The moment a payment is verified through Paystack (via webhook), the system automatically releases the card — generates the PDF, uploads it to storage, and sends the guardian a download link by both email and SMS. No admin intervention required.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Can one Akademia installation serve multiple schools?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — Akademia is built on a multi-tenant architecture. A single deployment can serve many schools simultaneously, each operating in complete data isolation. Students, staff, grades, and fees from School A are never visible to School B. Each school's data is scoped at the API level on every single request, making cross-school data leakage architecturally impossible.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Is there an offline mode? What happens when the internet goes down?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Akademia is packaged as a native Windows desktop app via Tauri — it's a real installed application, not a web browser shortcut. Offline support for core functions like attendance and grade entry is on our near-term roadmap, with sync happening automatically when the connection is restored. This is especially important for schools in areas with unreliable internet in Ghana.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How does the grading system work?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Grades are made up of three components: Continuous Assessment (CA) at 30%, Mid-term at 20%, and End-of-term Exam at 50%. Akademia computes the weighted aggregate automatically. Grade bands (e.g., A1 for 80–100, B2 for 70–79, etc.) are fully configurable by the School Admin. Teachers can only enter grades for the specific class-subject combinations they've been assigned — preventing accidental or unauthorized edits.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What payment methods are supported for school fees?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Akademia integrates with Paystack as the primary payment processor — which supports mobile money (MTN MoMo, Vodafone Cash, AirtelTigo Money), card payments, and bank transfers for Ghanaian payers. Flutterwave is available as a secondary option. Payments are verified via webhook with a polling-based fallback to handle webhook delivery failures.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How does SMS notification work? Do Ghanaian numbers work?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — Akademia uses Arkesel as the primary SMS provider, which is built for Ghana and covers MTN, Vodafone, and AirtelTigo numbers reliably. Hubtel is available as a fallback. Phone numbers are automatically normalized to the correct format (e.g., 0244123456 → +233244123456) before sending. Every SMS dispatch is logged with its status, so you always know what was sent and to whom.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What subscription plans are available?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Akademia offers three plans: Basic, Standard, and Premium — each with different student capacity limits and feature access. Subscriptions are annual and managed per school (tenant). Schools that miss a renewal get a configurable grace period with read-only access before being locked out. Renewal is handled directly through Paystack from within the app itself.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Is Akademia available on Mac or mobile?
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Akademia is currently a Windows desktop application, launching on the Microsoft Store. A macOS version packaged via the App Store is in active development. A mobile companion app (PWA or native) for guardians to check fees, attendance, and results is on our product roadmap. The core web application runs in any modern browser as well.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How secure is student data? These are minors.
+          <span class="faq-chevron">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">We take data security seriously, especially given that student data involves minors. All data is encrypted in transit (HTTPS/TLS) and at rest (Supabase PostgreSQL with encryption). Authentication uses short-lived JWTs via Supabase Auth. Every action in the system is logged in the audit trail. Tenant isolation prevents any cross-school data access. We're aligned with Ghana's Data Protection Act, 2012 (Act 843), and are building toward a full data protection compliance posture.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ STORE ══════════════════ -->
+<section class="store" id="store">
+  <div class="container">
+    <div class="section-label" style="justify-content:center;display:flex">Coming Soon</div>
+    <h2>Akademia is almost here.</h2>
+    <p>A native desktop application for Windows and macOS. Clean, fast, and designed for the schools that shape Ghana's future.</p>
+    <div class="badges">
+      <a href="#" class="badge-btn" aria-label="Get it on Microsoft Store (coming soon)">
+        <span class="badge-icon">⊞</span>
+        <span class="badge-text">
+          <small>Get it from</small>
+          <strong>Microsoft Store</strong>
+        </span>
+      </a>
+      <a href="#" class="badge-btn outline" aria-label="Download on the App Store (coming soon)">
+        <span class="badge-icon" style="font-size:1.6rem"></span>
+        <span class="badge-text" style="color:var(--ink)">
+          <small>Download on the</small>
+          <strong>App Store</strong>
+        </span>
+      </a>
+    </div>
+    <p class="coming-soon-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Store listings are currently in review. Sign up below to be notified when Akademia launches.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <span class="footer-brand">Akademia</span>
+      <p class="footer-desc">A modern school management platform built for Ghanaian Primary, JHS, and SHS schools. Attendance, fees, grading, and report cards — in one elegant desktop app.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#action">Screenshots</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#store">Download</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Roles</h5>
+      <ul>
+        <li><a href="#roles">Platform Admin</a></li>
+        <li><a href="#roles">School Admin</a></li>
+        <li><a href="#roles">Staff / Teachers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://github.com/nonydev27/akademia-showcase" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Akademia. All rights reserved.</p>
+    <p class="made">Built for Ghana 🇬🇭</p>
+  </div>
+</footer>
+
+<!-- ══════════════════ JS ══════════════════ -->
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      // open clicked if it was closed
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Smooth nav active highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.style.color = a.getAttribute('href') === '#' + entry.target.id ? 'var(--ink)' : '';
+        });
+      }
+    });
+  }, { rootMargin: '-50% 0px -50% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Scroll-triggered fade-in for feature cards and other elements
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .step, .role-card, .screen-card, .flow-step').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity .5s ease ${(i % 4) * 0.08}s, transform .5s ease ${(i % 4) * 0.08}s`;
+    revealObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>
