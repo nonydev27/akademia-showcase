@@ -1,6 +1,5 @@
 export default function Intercept() {
   return (
-  {/* ══════════════════ RESULT-FEE INTERCEPT ══════════════════ */}
   <section className="intercept">
     <div className="container">
       <div className="intercept-inner" data-reveal="scale">

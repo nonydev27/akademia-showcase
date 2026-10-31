@@ -1,6 +1,5 @@
 export default function Features() {
   return (
-  {/* ══════════════════ FEATURES ══════════════════ */}
   <section className="features" id="features">
     <div className="container">
       <div className="features-intro">

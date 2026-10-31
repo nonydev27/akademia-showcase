@@ -1,6 +1,5 @@
 export default function Store() {
   return (
-  {/* ══════════════════ STORE ══════════════════ */}
   <section className="store" id="store">
     <div className="container">
       <div className="section-label" data-reveal>Available Now</div>

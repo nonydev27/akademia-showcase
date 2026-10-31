@@ -1,6 +1,5 @@
 export default function Faq() {
   return (
-  {/* ══════════════════ FAQ ══════════════════ */}
   <section className="faq" id="faq">
     <div className="container">
       <div className="faq-intro">

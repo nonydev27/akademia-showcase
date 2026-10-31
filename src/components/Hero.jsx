@@ -1,6 +1,5 @@
 export default function Hero() {
   return (
-  {/* ══════════════════ HERO ══════════════════ */}
   <section className="hero" id="home">
     <div className="hero-grid-lines" />
     <div className="container">

@@ -1,6 +1,5 @@
 export default function HowItWorks() {
   return (
-  {/* ══════════════════ HOW IT WORKS ══════════════════ */}
   <section className="how" id="how">
     <div className="container">
       <div className="section-label" data-reveal>How It Works</div>

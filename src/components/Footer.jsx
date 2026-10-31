@@ -1,6 +1,5 @@
 export default function Footer() {
   return (
-  {/* ══════════════════ FOOTER ══════════════════ */}
   <footer>
     <div className="footer-grid">
       <div>

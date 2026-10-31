@@ -1,6 +1,5 @@
 export default function StatsBand() {
   return (
-  {/* ══════════════════ STATS BAND ══════════════════ */}
   <section className="stats">
     <div className="container">
       <div className="stats-inner" data-reveal="scale">

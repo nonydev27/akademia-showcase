@@ -1,6 +1,5 @@
 export default function Roles() {
   return (
-  {/* ══════════════════ ROLES ══════════════════ */}
   <section className="roles" id="roles">
     <div className="container">
       <div className="section-label" data-reveal>Three Roles, One System</div>
