@@ -1,4 +1,6 @@
 import React from 'react';
+import heroDashboardImg from '../assets/images/dashboard.jpg';
+
 export default function Hero() {
   return (
   <section className="hero" id="home">
@@ -39,7 +41,7 @@ export default function Hero() {
             <div className="window-title">Akademia — Admin Dashboard</div>
             <span className="window-pill">Windows</span>
           </div>
-          <img src="images/Dashboard (Windows)-selection.png" alt="Akademia admin dashboard showing students, attendance, and fee overview" loading="eager" />
+          <img src={heroDashboardImg} alt="Akademia admin dashboard showing students, attendance, and fee overview" loading="eager" />
         </div>
       </div>
     </div>

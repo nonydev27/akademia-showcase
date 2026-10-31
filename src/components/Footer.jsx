@@ -1,11 +1,13 @@
 import React from 'react';
+import logoWhiteImg from '../assets/images/brand-logo-horizontal-white.svg';
+
 export default function Footer() {
   return (
   <footer>
     <div className="footer-grid">
       <div>
         <span className="footer-brand">
-          <img src="images/brand-logo-horizontal-white.svg" alt="Akademia" width="274" height="64" />
+          <img src={logoWhiteImg} alt="Akademia" width="274" height="64" />
         </span>
         <p className="footer-desc">A modern school management platform built for Ghanaian Primary, JHS, and SHS schools. Attendance, fees, grading, and report cards — in one elegant desktop app.</p>
       </div>

@@ -1,9 +1,11 @@
 import React from 'react';
+import logoImg from '../assets/images/brand-logo-horizontal.svg';
+
 export default function Nav() {
   return (
   <nav id="nav">
     <a href="#home" className="nav-logo" aria-label="Akademia home">
-      <img src="images/brand-logo-horizontal.svg" alt="Akademia" width="274" height="64" />
+      <img src={logoImg} alt="Akademia" width="274" height="64" />
     </a>
     <ul className="nav-links">
       <li><a href="#features">Features</a></li>
