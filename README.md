@@ -11,6 +11,8 @@ npm run dev
 
 Create a production build with `npm run build`, then preview it with `npm run preview`.
 
+GitHub Pages deployment is configured through `.github/workflows/deploy.yml`. In the repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**. Pushing to `main` then builds and deploys the site.
+
 ## Project structure
 
 - `src/App.jsx` — React page and showcase content
