@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { setupSiteInteractions } from './site-interactions.js';
 
 export default function App() {
