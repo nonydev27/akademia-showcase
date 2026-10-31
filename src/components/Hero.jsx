@@ -1,5 +1,5 @@
 import React from 'react';
-import heroDashboardImg from '../assets/images/dashboard.jpg';
+import heroDashboardImg from '../assets/images/store/macbook-2880x1800/1-dashboard.png';
 
 export default function Hero() {
   return (

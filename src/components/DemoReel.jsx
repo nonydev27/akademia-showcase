@@ -48,7 +48,8 @@ export default function DemoReel() {
           <h2 className="section-title" data-reveal>See Akademia in motion</h2>
           <p className="section-sub" data-reveal>A guided reel through real Akademia screens, with an explanation of what each one shows.</p>
         </div>
-        <div className={`demo-player${playing ? '' : ' paused'}`} id="demoPlayer" data-reveal="scale">
+        <div data-reveal="scale">
+          <div className={`demo-player${playing ? '' : ' paused'}`} id="demoPlayer">
           <div className="demo-chrome">
             <span className="demo-live"><span className="dot" /> Product tour</span>
             <span className="demo-chrome-title">Akademia — Windows Desktop App</span>
@@ -99,6 +100,7 @@ export default function DemoReel() {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

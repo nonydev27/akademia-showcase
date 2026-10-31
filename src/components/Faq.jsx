@@ -55,13 +55,13 @@ export default function Faq() {
           <h2 className="section-title" data-reveal>Questions we&apos;ve been asked</h2>
           <p className="section-sub" data-reveal>Everything you need to know before getting started.</p>
         </div>
-        <div className="faq-list">
+        <div className="faq-list" data-reveal>
           {questions.map(({ question, answer }, index) => {
             const isOpen = openIndex === index;
             const answerId = `faq-answer-${index}`;
 
             return (
-              <div className={`faq-item${isOpen ? ' open' : ''}`} data-reveal key={question}>
+              <div className={`faq-item${isOpen ? ' open' : ''}`} key={question}>
                 <button
                   type="button"
                   className="faq-q"
