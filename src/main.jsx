@@ -9,4 +9,5 @@ if (!('IntersectionObserver' in window)) {
   document.documentElement.classList.add('no-observer');
 }
 
+console.log('AKADEMIA_MAIN_START');
 createRoot(document.getElementById('root')).render(<App />);
