@@ -7,12 +7,12 @@ export default function Store() {
       <h2 data-reveal>Akademia is ready for Windows.</h2>
       <p data-reveal>A native desktop application, clean and fast, designed for the schools that shape Ghana's future. macOS is on the way.</p>
       <div className="badges" data-reveal>
-        <a href="https://github.com/nonydev27/akademia-releases/releases/download/v0.2.4/Akademia_0.2.4_x64-setup.exe" target="_blank" rel="noopener" className="badge-btn primary-download" aria-label="Download Akademia for Windows">
+        <a href="downloads/Akademia_0.3.4.0_x64.msix" download className="badge-btn primary-download" aria-label="Download Akademia for Windows">
           <span className="badge-icon">
             <svg viewBox="0 0 88 88" fill="currentColor"><rect x={0} y={0} width={41} height={41} /><rect x={47} y={0} width={41} height={41} /><rect x={0} y={47} width={41} height={41} /><rect x={47} y={47} width={41} height={41} /></svg>
           </span>
           <span className="badge-text">
-            <small>Direct Download (.exe)</small>
+            <small>Direct Download (.msix)</small>
             <strong>Get it for Windows</strong>
           </span>
         </a>
