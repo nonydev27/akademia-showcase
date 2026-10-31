@@ -1,3 +1,4 @@
+import React from 'react';
 export default function Store() {
   return (
   <section className="store" id="store">
@@ -6,7 +7,7 @@ export default function Store() {
       <h2 data-reveal>Akademia is ready for Windows.</h2>
       <p data-reveal>A native desktop application, clean and fast, designed for the schools that shape Ghana's future. macOS is on the way.</p>
       <div className="badges" data-reveal>
-        <a href="downloads/Akademia_0.3.4.0_x64.msix" download className="badge-btn primary-download" aria-label="Download Akademia for Windows">
+        <a href="downloads/Akademia_0.3.4.0_x64.msix" download="Akademia_0.3.4.0_x64.msix" className="badge-btn primary-download" aria-label="Download Akademia for Windows">
           <span className="badge-icon">
             <svg viewBox="0 0 88 88" fill="currentColor"><rect x={0} y={0} width={41} height={41} /><rect x={47} y={0} width={41} height={41} /><rect x={0} y={47} width={41} height={41} /><rect x={47} y={47} width={41} height={41} /></svg>
           </span>
@@ -36,7 +37,10 @@ export default function Store() {
       </div>
       <p className="coming-soon-note" data-reveal>
         <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><circle cx={12} cy={12} r={10} /><line x1={12} y1={8} x2={12} y2={12} /><line x1={12} y1={16} x2="12.01" y2={16} /></svg>
-        Microsoft Store listing is in review — grab the direct download for now. Get in touch to be notified when the store listings go live.
+        Version 0.3.4.0 for Windows.{' '}
+        <a href="https://github.com/nonydev27/akademia-releases/releases/tag/v0.3.4" target="_blank" rel="noopener noreferrer">
+          Release notes and other installers
+        </a>
       </p>
     </div>
   </section>

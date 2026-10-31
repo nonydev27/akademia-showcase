@@ -1,3 +1,4 @@
+import React from 'react';
 export default function Features() {
   return (
   <section className="features" id="features">
@@ -66,7 +67,7 @@ export default function Features() {
         <div className="feature-card" data-reveal>
           <div className="feature-icon fi-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x={2} y={3} width={20} height={14} rx={2} ry={2} /><line x1={8} y1={21} x2={16} y2={21} /><line x1={12} y1={17} x2={12} y2={21} /></svg></div>
           <h3>Native Desktop App (Tauri)</h3>
-          <p>Packaged as a native Windows .exe installer via Tauri. Works offline for core functions. No browser required — a real, installable desktop application. Coming soon to Microsoft Store.</p>
+          <p>Packaged as a native Windows desktop app with direct MSIX and release installers available. No browser required — a real, installable application.</p>
         </div>
       </div>
     </div>

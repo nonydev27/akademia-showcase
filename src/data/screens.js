@@ -1,5 +1,4 @@
-// Shared data for the demo reel and the "See It In Action" carousel.
-// Every point is grounded in what is actually visible on the screenshot.
+// Shared screen descriptions used by the demo and screenshot carousel.
 export const screens = [
   {
     id: 'dashboard',
@@ -7,13 +6,12 @@ export const screens = [
     thumbLabel: 'Admin Dashboard',
     label: 'Admin Dashboard',
     title: 'Real-time school overview',
-    alt: 'Akademia admin dashboard with KPI cards, charts and the students table',
-    // What the screenshot actually shows, one bullet per thing:
+    alt: 'Akademia school dashboard showing subscription status, summary cards, quick actions and outstanding fees',
     points: [
-      'Top KPI cards show total students, attendance rate today, fee collections, and pending results.',
-      'The sidebar lists every module — Students, Attendance, Fees, Grades, Report Cards, Settings — and highlights the active one.',
-      'A class-level breakdown shows how each class is performing at a glance.',
-      'The students table at the bottom shows admission numbers like VIS-001 — no UUIDs anywhere.',
+      'The summary cards show student count, outstanding fees, students with balances, and today’s date.',
+      'A subscription banner calls out the active grace period and remaining days.',
+      'Quick actions surface common tasks such as adding a student, recording a payment, and publishing results.',
+      'The outstanding-fees panel provides a place to review balances.',
     ],
   },
   {
@@ -22,12 +20,12 @@ export const screens = [
     thumbLabel: 'Staff & Assignments',
     label: 'Staff & Assignments',
     title: 'Teachers, classes, subjects, PINs',
-    alt: 'Akademia staff management screen listing teachers with their class and subject assignments',
+    alt: 'Akademia staff screen showing a teacher list, account status, assignment column and teacher details panel',
     points: [
-      'Every staff row shows the teacher\'s name alongside their assigned class and subject.',
-      'Access codes follow the readable format T-AO-ENGLP2-JHS2A — subject and class are legible in the code itself.',
-      'Grade entry is PIN-gated, so no one records grades on an unlocked machine.',
-      'Teachers can reset their own PIN — no admin round-trip needed.',
+      'The teacher table shows names, email addresses, assignments, and account status.',
+      'The details panel identifies the selected teacher and shows their role and join date.',
+      'Assignment controls let an administrator assign a teacher to classes.',
+      'The screen makes it easy to scan staff status without opening each account.',
     ],
   },
   {
@@ -36,12 +34,12 @@ export const screens = [
     thumbLabel: 'Subscriptions & Licensing',
     label: 'Subscriptions & Licensing',
     title: 'Licensing, plan tiers & renewal',
-    alt: 'Akademia subscription and licensing screen with plan cards and renewal actions',
+    alt: 'Akademia subscription screen showing a grace-period notice, plan cards, annual prices and renewal controls',
     points: [
-      'A status banner states the tenant\'s license state at the top of the screen.',
-      'Plan cards show the tier limits and features side by side for easy comparison.',
-      'Renewal runs through Paystack directly inside the app — no external portal.',
-      'Expired schools in the grace period keep read-only access until renewal.',
+      'A prominent notice shows the subscription is in its grace period and gives the remaining time.',
+      'Basic, Standard, and Premium plans are compared side by side with annual prices and included features.',
+      'The selected plan is highlighted, and renewal controls remain visible at the bottom.',
+      'The screen keeps subscription status and plan selection together.',
     ],
   },
   {
@@ -50,12 +48,12 @@ export const screens = [
     thumbLabel: 'Secure Sign In',
     label: 'Secure Sign In',
     title: 'Role-aware authentication',
-    alt: 'Akademia sign in screen with email and password fields',
+    alt: 'Akademia sign-in screen with product benefits, email and password fields, forgot-password link and sign-in button',
     points: [
-      'A clean email + password form against the Akademia brand panel.',
-      'Sign-in routes each user to the workspace that matches their role.',
-      'Sessions are short-lived JWTs issued by Supabase Auth.',
-      'Every login is written to the audit trail with actor and timestamp.',
+      'The branded panel introduces Akademia and lists the main school-management benefits.',
+      'The form provides email and password fields, plus a forgot-password link.',
+      'A visibility control lets users check their password before submitting.',
+      'A prominent sign-in button anchors the form.',
     ],
   },
 ];

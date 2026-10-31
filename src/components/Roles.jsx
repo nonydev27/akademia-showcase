@@ -1,3 +1,4 @@
+import React from 'react';
 export default function Roles() {
   return (
   <section className="roles" id="roles">

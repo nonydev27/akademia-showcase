@@ -1,109 +1,167 @@
 export function setupSiteInteractions() {
-  // ── FAQ accordion (accordion-style: only one open) ──
-  document.querySelectorAll('.faq-q').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
-  });
+  const cleanups = [];
+  const observers = [];
+  const revealTimeouts = new Set();
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  const supportsIntersectionObserver = 'IntersectionObserver' in window;
 
-  // ── Scroll reveal with stagger ──
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealEls = document.querySelectorAll('[data-reveal]');
-  if (reduceMotion) {
-    revealEls.forEach(el => el.classList.add('in'));
-  } else {
+  const listen = (target, type, handler, options) => {
+    target.addEventListener(type, handler, options);
+    cleanups.push(() => target.removeEventListener(type, handler, options));
+  };
+
+  const revealElements = document.querySelectorAll('[data-reveal]');
+
+  if (supportsIntersectionObserver && !reduceMotion) {
     const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const parent = entry.target.parentElement;
-        const siblings = parent ? Array.from(parent.children).filter(c => c.hasAttribute && c.hasAttribute('data-reveal')) : [];
-        const idx = Math.max(0, siblings.indexOf(entry.target));
-        const delay = Math.min(idx % 6, 5) * 90;
-        setTimeout(() => entry.target.classList.add('in'), delay);
+
+        const siblings = Array.from(entry.target.parentElement?.children ?? [])
+          .filter((element) => element.hasAttribute('data-reveal'));
+        const index = Math.max(0, siblings.indexOf(entry.target));
+        const delay = Math.min(index % 6, 5) * 90;
+        const timeout = window.setTimeout(() => {
+          entry.target.classList.add('in');
+          revealTimeouts.delete(timeout);
+        }, delay);
+
+        revealTimeouts.add(timeout);
         revealObserver.unobserve(entry.target);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-    revealEls.forEach(el => revealObserver.observe(el));
+
+    observers.push(revealObserver);
+    revealElements.forEach((element) => revealObserver.observe(element));
+    root.classList.add('reveal-ready');
+  } else {
+    revealElements.forEach((element) => element.classList.add('in'));
+    root.classList.add('no-observer');
   }
 
-  // ── Animated counters ──
   const counters = document.querySelectorAll('.count');
-  const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = parseInt(el.dataset.target || '0', 10);
-      const dur = 1400;
-      const start = performance.now();
-      const tick = (now) => {
-        const p = Math.min((now - start) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased);
-        if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = target;
-      };
-      requestAnimationFrame(tick);
-      countObserver.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(c => countObserver.observe(c));
 
-  // ── Nav: scrolled state + active link ──
-  const nav = document.getElementById('nav');
-  const onScroll = () => {
-    nav.classList.toggle('scrolled', window.scrollY > 12);
-    const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-    document.getElementById('progress').style.width = Math.min(100, Math.max(0, pct)) + '%';
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  if (supportsIntersectionObserver && !reduceMotion) {
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
 
-  const navLinkEls = document.querySelectorAll('.nav-links a[href^="#"]');
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      navLinkEls.forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        const element = entry.target;
+        const target = Number.parseInt(element.dataset.target ?? '0', 10);
+        const duration = 1400;
+        const start = performance.now();
+
+        const tick = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          element.textContent = String(Math.round(target * eased));
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            element.textContent = String(target);
+          }
+        };
+
+        requestAnimationFrame(tick);
+        countObserver.unobserve(element);
       });
-    });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+    }, { threshold: 0.5 });
 
-  // ── Cursor glow (fine pointers only) ──
+    observers.push(countObserver);
+    counters.forEach((counter) => countObserver.observe(counter));
+  } else {
+    counters.forEach((counter) => {
+      counter.textContent = counter.dataset.target ?? '0';
+    });
+  }
+
+  const nav = document.getElementById('nav');
+  const progress = document.getElementById('progress');
+
+  const updateScrollState = () => {
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 12);
+
+    if (progress) {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const percentage = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
+      progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+    }
+  };
+
+  listen(window, 'scroll', updateScrollState, { passive: true });
+  updateScrollState();
+
+  if (supportsIntersectionObserver) {
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        navLinks.forEach((link) => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+
+    observers.push(sectionObserver);
+    document.querySelectorAll('section[id]').forEach((section) => sectionObserver.observe(section));
+  }
+
   const glow = document.getElementById('cursorGlow');
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && glow) {
-    let gx = window.innerWidth / 2, gy = window.innerHeight / 2, tx = gx, ty = gy;
-    window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
-    const loop = () => {
-      gx += (tx - gx) * 0.12;
-      gy += (ty - gy) * 0.12;
-      glow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%, -50%)`;
-      requestAnimationFrame(loop);
+
+  if (glow && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) {
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let targetX = x;
+    let targetY = y;
+    let frame = 0;
+    let running = true;
+
+    listen(window, 'mousemove', (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+    }, { passive: true });
+
+    const animateGlow = () => {
+      if (!running) return;
+      x += (targetX - x) * 0.12;
+      y += (targetY - y) * 0.12;
+      glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      frame = requestAnimationFrame(animateGlow);
     };
-    requestAnimationFrame(loop);
+
+    frame = requestAnimationFrame(animateGlow);
+    cleanups.push(() => {
+      running = false;
+      cancelAnimationFrame(frame);
+    });
   } else if (glow) {
     glow.style.display = 'none';
   }
 
-  // ── Feature card spotlight follows the pointer ──
-  document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
-      card.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+  document.querySelectorAll('.feature-card').forEach((card) => {
+    listen(card, 'mousemove', (event) => {
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${((event.clientX - bounds.left) / bounds.width) * 100}%`);
+      card.style.setProperty('--my', `${((event.clientY - bounds.top) / bounds.height) * 100}%`);
     });
   });
 
-  // ── Hero parallax on the product screenshot ──
   const heroWindow = document.getElementById('heroWindow');
   if (heroWindow && !reduceMotion) {
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < 900) heroWindow.style.transform = `rotateX(${Math.max(0, 6 - y / 150)}deg) translateY(${y * -0.04}px)`;
+    listen(window, 'scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY < 900) {
+        heroWindow.style.transform = `rotateX(${Math.max(0, 6 - scrollY / 150)}deg) translateY(${scrollY * -0.04}px)`;
+      }
     }, { passive: true });
   }
 
+  return () => {
+    cleanups.reverse().forEach((cleanup) => cleanup());
+    observers.forEach((observer) => observer.disconnect());
+    revealTimeouts.forEach((timeout) => window.clearTimeout(timeout));
+    root.classList.remove('reveal-ready');
+  };
 }

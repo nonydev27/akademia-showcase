@@ -15,7 +15,12 @@ GitHub Pages deployment is configured through `.github/workflows/deploy.yml`. In
 
 ## Project structure
 
-- `src/App.jsx` — React page and showcase content
-- `src/site-interactions.js` — scroll effects, demo reel, carousel, and FAQ behavior
+- `src/App.jsx` — page composition
+- `src/components/` — page sections, FAQ, screenshot carousel, and demo reel
+- `src/data/screens.js` — shared screenshot descriptions
+- `src/site-interactions.js` — progressive scroll reveals and visual effects
 - `src/styles.css` — global styles
 - `public/images/` — screenshots and favicon assets
+- `public/downloads/` — Windows installer
+
+The download section links to the bundled Windows MSIX and the [v0.3.4 release](https://github.com/nonydev27/akademia-releases/releases/tag/v0.3.4) for release notes and alternate installers.

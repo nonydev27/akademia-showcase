@@ -1,3 +1,4 @@
+import React from 'react';
 export default function Marquee() {
   return (
   <div className="marquee-wrap" aria-hidden="true">
