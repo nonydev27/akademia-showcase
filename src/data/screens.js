@@ -19,7 +19,7 @@ export const screens = [
     image: 'images/Staff (Windows)-selection.png',
     thumbLabel: 'Staff & Assignments',
     label: 'Staff & Assignments',
-    title: 'Teachers, classes, subjects, PINs',
+    title: 'Teachers, class assignments & staff details',
     alt: 'Akademia staff screen showing a teacher list, account status, assignment column and teacher details panel',
     points: [
       'The teacher table shows names, email addresses, assignments, and account status.',
@@ -47,7 +47,7 @@ export const screens = [
     image: 'images/Sign In (Windows)-selection.png',
     thumbLabel: 'Secure Sign In',
     label: 'Secure Sign In',
-    title: 'Role-aware authentication',
+    title: 'Sign in to your school workspace',
     alt: 'Akademia sign-in screen with product benefits, email and password fields, forgot-password link and sign-in button',
     points: [
       'The branded panel introduces Akademia and lists the main school-management benefits.',

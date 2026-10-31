@@ -4,7 +4,7 @@ export function setupSiteInteractions() {
   const revealTimeouts = new Set();
   const root = document.documentElement;
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-  const supportsIntersectionObserver = 'IntersectionObserver' in window;
+  const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
 
   const listen = (target, type, handler, options) => {
     target.addEventListener(type, handler, options);
