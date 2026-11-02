@@ -23,7 +23,7 @@ export default function Footer() {
       <div className="footer-col">
         <h5>Roles</h5>
         <ul>
-          <li><a href="#roles">Platform Admin</a></li>
+          {/* <li><a href="#roles">Platform Admin</a></li> */}
           <li><a href="#roles">School Admin</a></li>
           <li><a href="#roles">Staff / Teachers</a></li>
         </ul>
