@@ -6,7 +6,7 @@ export default function Roles() {
       <div className="section-label" data-reveal>Three Roles, One System</div>
       <h2 className="section-title" data-reveal>Everyone has exactly<br />the access they need</h2>
       <div className="roles-grid">
-        <div className="role-card superadmin" data-reveal>
+        {/* <div className="role-card superadmin" data-reveal>
           <div className="role-tag">Platform Admin</div>
           <h3>Super Admin</h3>
           <p>The platform owner. Manages all schools, subscriptions, and has a bird's-eye view of every tenant on the system.</p>
@@ -17,7 +17,7 @@ export default function Roles() {
             <li>Onboard new School Admins</li>
             <li>Monitor subscription health</li>
           </ul>
-        </div>
+        </div> */}
         <div className="role-card schooladmin" data-reveal>
           <div className="role-tag">School Admin</div>
           <h3>School Administrator</h3>
