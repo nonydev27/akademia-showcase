@@ -18,7 +18,7 @@ export default function Hero() {
       </div>
       <div className="hero-note" data-reveal>
         <span><b>Multi-tenant:</b> one platform, many schools</span>
-        <span><b>Windows desktop app</b> via Tauri</span>
+        <span><b>Windows desktop app</b> on Windows & Mac</span>
       </div>
       {/* Real screenshot showcase */}
       <div className="showcase" data-reveal="scale">
