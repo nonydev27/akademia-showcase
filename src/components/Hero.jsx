@@ -17,8 +17,8 @@ export default function Hero() {
         <a href="#features" className="btn-outline">Explore Features</a>
       </div>
       <div className="hero-note" data-reveal>
-        <span>✦ <b>Multi-tenant</b> — one platform, many schools</span>
-        <span>✦ <b>Windows desktop app</b> via Tauri</span>
+        <span><b>Multi-tenant:</b> one platform, many schools</span>
+        <span><b>Windows desktop app</b> via Tauri</span>
       </div>
       {/* Real screenshot showcase */}
       <div className="showcase" data-reveal="scale">
