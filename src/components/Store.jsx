@@ -16,12 +16,12 @@ export default function Store() {
             <strong>Get it for Windows</strong>
           </span>
         </a>
-        <a href="#" className="badge-btn outline disabled" aria-disabled="true" aria-label="Microsoft Store — coming soon" tabIndex={-1}>
+        <a href="#" className="badge-btn outline" aria-disabled="true" aria-label="Microsoft Store — coming soon" tabIndex={-1}>
           <span className="badge-icon">
             <svg viewBox="0 0 23 23"><rect x={1} y={1} width={10} height={10} fill="#F25022" /><rect x={12} y={1} width={10} height={10} fill="#7FBA00" /><rect x={1} y={12} width={10} height={10} fill="#00A4EF" /><rect x={12} y={12} width={10} height={10} fill="#FFB900" /></svg>
           </span>
           <span className="badge-text" style={{color: 'var(--ink)'}}>
-            <small>Coming soon to</small>
+            <small> Now on the</small>
             <strong>Microsoft Store</strong>
           </span>
         </a>
