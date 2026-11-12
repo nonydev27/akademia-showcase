@@ -1,15 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import {
+  ArrowRight,
+  Laptop,
+  CheckCircle2,
+  BarChart3,
+  ShieldCheck,
+  Mail,
+  ChevronDown,
+} from 'lucide-react';
 import Canvas3D from './Canvas3D.jsx';
 import { sound } from '../utils/audio.js';
+import { useApp } from '../context/AppContext.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
+  const { t } = useApp();
   const heroRef = useRef(null);
   const headlineRef = useRef(null);
-  const chipsRef = useRef([]);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -27,7 +37,7 @@ export default function Hero() {
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // GSAP ScrollTrigger to scrub 3D laptop opening & parallax layers
+    // GSAP ScrollTrigger to scrub 3D laptop opening and parallax layers
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: heroEl,
@@ -108,65 +118,62 @@ export default function Hero() {
 
       <div className="container hero-container">
         {/* Top Announcement Badge */}
-        <div className="hero-badge-wrap" data-reveal>
+        <div className="hero-badge-wrap">
           <div className="hero-badge">
             <span className="dot" />
-            <span>Built for Ghanaian Schools • GES 30/20/50 Grading</span>
+            <span>{t.hero.badge}</span>
           </div>
         </div>
 
         {/* Cinematic Headline with Shimmer & Kinetic Gradient */}
-        <h1 ref={headlineRef} className="hero-title" data-reveal>
+        <h1 ref={headlineRef} className="hero-title">
           School Management, <br />
           <em>Finally Done Right</em>
         </h1>
 
-        <p className="hero-subtitle" data-reveal>
-          Akademia brings attendance, fees, continuous assessment grading, terminal report cards,
-          and Paystack mobile money together in one ultra-fast desktop experience built for
-          Primary, JHS, and SHS institutions.
+        <p className="hero-subtitle">
+          {t.hero.subtitle}
         </p>
 
         {/* Kinetic CTA Actions */}
-        <div className="hero-btns" data-reveal>
+        <div className="hero-btns">
           <a
-            href="#story"
+            href="#watch"
             className="btn-primary magnetic-btn"
             onClick={() => sound.playClick()}
           >
-            <span>Explore Interactive Story</span>
-            <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
+            <span>{t.hero.seeAction}</span>
+            <ArrowRight size={16} />
           </a>
           <a
             href="#features"
             className="btn-outline magnetic-btn"
             onClick={() => sound.playClick()}
           >
-            System Features
+            {t.hero.featuresBtn}
           </a>
           <a
             href="#store"
             className="btn-store-pill magnetic-btn"
             onClick={() => sound.playClick()}
           >
-            <span className="win-icon">❖</span> Windows App (.msix)
+            <Laptop size={15} className="win-icon" />
+            <span>{t.hero.downloadBtn}</span>
           </a>
         </div>
 
-        <div className="hero-pillars-row" data-reveal>
+        <div className="hero-pillars-row">
           <div className="pillar-item">
             <span className="pillar-dot" />
-            <span><strong>Multi-Tenant:</strong> One platform, isolated databases</span>
+            <span>{t.hero.multiTenant}</span>
           </div>
           <div className="pillar-item">
             <span className="pillar-dot" />
-            <span><strong>Desktop Power:</strong> Fast 60fps Windows application</span>
+            <span>{t.hero.desktopSpeed}</span>
           </div>
           <div className="pillar-item">
             <span className="pillar-dot" />
-            <span><strong>Paystack & MoMo:</strong> MTN & Telecel real-time verification</span>
+            <span>{t.hero.fintech}</span>
           </div>
         </div>
 
@@ -174,14 +181,10 @@ export default function Hero() {
         <div className="hero-3d-stage">
           <Canvas3D scrollProgress={scrollProgress} mousePos={mousePos} />
 
-          {/* Foreground 3D Parallax Floating Glass Chips */}
+          {/* Foreground 3D Parallax Floating Glass Chips with clean SVG icons */}
           <div className="hero-float-chip hero-chip-1" style={{ transform: `translate3d(${mousePos.x * 12}px, ${-mousePos.y * 10}px, 0)` }}>
             <span className="chip-icon-box blue">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1={18} y1={20} x2={18} y2={10} />
-                <line x1={12} y1={20} x2={12} y2={4} />
-                <line x1={6} y1={20} x2={6} y2={14} />
-              </svg>
+              <BarChart3 size={18} />
             </span>
             <div className="chip-content">
               <strong>Live Admin Dashboard</strong>
@@ -191,26 +194,20 @@ export default function Hero() {
 
           <div className="hero-float-chip hero-chip-2" style={{ transform: `translate3d(${-mousePos.x * 15}px, ${mousePos.y * 12}px, 0)` }}>
             <span className="chip-icon-box gold">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x={3} y={11} width={18} height={11} rx={2} ry={2} />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
+              <ShieldCheck size={18} />
             </span>
             <div className="chip-content">
-              <strong>Result-Fee Intercept</strong>
+              <strong>Result Fee Intercept</strong>
               <small>Auto-holds until school fees clear</small>
             </div>
           </div>
 
           <div className="hero-float-chip hero-chip-3" style={{ transform: `translate3d(${mousePos.x * 14}px, ${mousePos.y * 14}px, 0)` }}>
             <span className="chip-icon-box sage">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
+              <Mail size={18} />
             </span>
             <div className="chip-content">
-              <strong>Ghana SMS & Email</strong>
+              <strong>Ghana SMS and Email</strong>
               <small>Instant guardian delivery</small>
             </div>
           </div>
@@ -221,7 +218,7 @@ export default function Hero() {
           <div className="scroll-puck">
             <span className="scroll-chevron" />
           </div>
-          <span className="scroll-prompt-text">Scroll to unlock the story</span>
+          <span className="scroll-prompt-text">Scroll to explore</span>
         </div>
       </div>
     </section>

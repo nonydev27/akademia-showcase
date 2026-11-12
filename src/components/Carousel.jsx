@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Sparkles, ChevronLeft, ChevronRight, CheckCircle2, Layers } from 'lucide-react';
 import { screens } from '../data/screens.js';
 import { sound } from '../utils/audio.js';
 
@@ -40,7 +41,8 @@ export default function Carousel() {
       <div className="container">
         <div className="action-intro">
           <div className="section-label">
-            <span className="label-gem" /> Detailed Screen Tour
+            <Layers size={14} className="label-icon-blue" />
+            <span>Detailed Screen Tour</span>
           </div>
           <h2 className="section-title">
             Every screen engineered for speed, <br />
@@ -85,7 +87,7 @@ export default function Carousel() {
                 onClick={prev}
                 aria-label="Previous screenshot"
               >
-                ‹
+                <ChevronLeft size={20} />
               </button>
               <button
                 type="button"
@@ -93,7 +95,7 @@ export default function Carousel() {
                 onClick={next}
                 aria-label="Next screenshot"
               >
-                ›
+                <ChevronRight size={20} />
               </button>
             </div>
           </div>
@@ -102,7 +104,7 @@ export default function Carousel() {
           <div className="carousel-details-panel">
             <div className="carousel-details-header">
               <span className="car-tagline">
-                ✦ Feature Workspace: {currentScreen.thumbLabel}
+                Feature Workspace: {currentScreen.thumbLabel}
               </span>
               <h3>{currentScreen.title}</h3>
             </div>
@@ -110,7 +112,7 @@ export default function Carousel() {
             <ul className="car-points-grid">
               {currentScreen.points.map((point) => (
                 <li key={point}>
-                  <span className="point-check">✓</span>
+                  <CheckCircle2 size={16} className="point-check" />
                   <span>{point}</span>
                 </li>
               ))}

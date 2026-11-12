@@ -15,8 +15,9 @@ import Faq from './components/Faq.jsx';
 import Store from './components/Store.jsx';
 import Footer from './components/Footer.jsx';
 import { setupSiteInteractions } from './site-interactions.js';
+import { AppProvider } from './context/AppContext.jsx';
 
-export default function App() {
+function AppContent() {
   useEffect(() => {
     const cleanup = setupSiteInteractions();
     return () => cleanup && cleanup();
@@ -48,13 +49,13 @@ export default function App() {
       {/* 5. Metrics & Isolated Tenant Architecture Stats */}
       <StatsBand />
 
-      {/* 6. Signature Technology: Result-Fee Intercept & Interactive Simulator */}
+      {/* 6. Signature Technology: Result Fee Intercept & Interactive Simulator */}
       <Intercept />
 
-      {/* 7. Roles: Super Admin, School Admin & Teachers */}
+      {/* 7. Roles: School Admin & Staff (Platform Admin hidden) */}
       <Roles />
 
-      {/* 8. Cinematic Demo Reel */}
+      {/* 8. Cinematic Demo Reel: MacBook Pro & Continuous Circular Carousel */}
       <DemoReel />
 
       {/* 9. Interactive 8-Screen Tour Carousel */}
@@ -72,8 +73,16 @@ export default function App() {
       {/* 13. Native Desktop App Store & MSIX Download */}
       <Store />
 
-      {/* 14. Footer with Live Operational Status */}
+      {/* 14. Footer with Accessible Back to Top Button */}
       <Footer />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }

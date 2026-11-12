@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
+import { Sparkles, ShieldCheck, CreditCard, CheckCircle2, ArrowRight } from 'lucide-react';
 import { sound } from '../utils/audio.js';
+import { useApp } from '../context/AppContext.jsx';
 
 const TIERS = [
   {
     id: 'starter',
     name: 'Starter',
-    badge: 'Basic / Daycare',
-    desc: 'Ideal for early childhood centers, primary academies, and newly opened schools.',
+    badge: 'Basic and Daycare',
+    desc: 'Ideal for early childhood centers, primary academies, and newly opened basic schools.',
     priceTerm: 450,
     priceYear: 1080,
     popular: false,
     features: [
       'Up to 250 registered students',
-      'Daily morning & afternoon attendance roll call',
+      'Daily morning and afternoon attendance roll call',
       'Ghana GES 30/20/50 continuous assessment',
-      'Paystack MoMo & card tuition collections',
+      'Paystack MoMo and card tuition collections',
       'Standard terminal report card PDF generation',
-      'Community email & ticket support',
+      'Community email and ticket support',
     ],
     ctaText: 'Get Started with Starter',
   },
   {
     id: 'standard',
-    name: 'Growth & Standard',
-    badge: 'Most Popular',
+    name: 'Growth and Standard',
+    badge: 'Most Popular Choice',
     desc: 'The complete command center for established Primary, JHS, and growing schools.',
     priceTerm: 850,
     priceYear: 2040,
@@ -31,38 +33,39 @@ const TIERS = [
     features: [
       'Up to 800 registered students',
       'Everything in Starter included',
-      'Automated Result-Fee Intercept protocol',
-      'Tamper-proof QR verification on report cards',
-      'Automated guardian SMS & email broadcasts',
+      'Automated Result Fee Intercept protocol',
+      'Tamper proof QR verification on report cards',
+      'Automated guardian SMS and email broadcasts',
       'Staff role permission sandboxing',
-      'Bulk CSV student import & ledger reconciliation',
+      'Bulk CSV student import and ledger reconciliation',
       'Priority WhatsApp technical support',
     ],
     ctaText: 'Choose Growth Plan',
   },
   {
     id: 'enterprise',
-    name: 'Enterprise / SHS',
-    badge: 'Senior High & Multi-Campus',
-    desc: 'For large Senior High Schools, multi-campus groups, and institutions requiring custom integrations.',
+    name: 'Senior High and Campus',
+    badge: 'Senior High and Multi Campus',
+    desc: 'For large Senior High Schools, multi campus groups, and institutions requiring custom integrations.',
     priceTerm: 1600,
     priceYear: 3840,
     popular: false,
     features: [
       'Unlimited students, teachers, and staff',
       'Everything in Standard included',
-      'Custom school branded SMS sender ID (e.g. VIS-ACADEMY)',
-      'Multi-campus unified governance dashboard',
-      'Custom school crest & verification seal embedding',
-      'Automated daily cloud backups & offsite export',
-      'Dedicated local account manager (Accra / Kumasi)',
-      'Custom training workshop for school staff',
+      'Custom school branded SMS sender ID',
+      'Multi campus unified governance dashboard',
+      'Custom school crest and verification seal embedding',
+      'Automated daily cloud backups and offsite export',
+      'Dedicated local account manager in Accra and Kumasi',
+      'Custom staff training workshop on site',
     ],
     ctaText: 'Deploy Enterprise',
   },
 ];
 
 export default function Pricing() {
+  const { t } = useApp();
   const [isAnnual, setIsAnnual] = useState(false);
 
   return (
@@ -74,16 +77,11 @@ export default function Pricing() {
       <div className="container">
         <div className="pricing-intro">
           <div className="section-label">
-            <span className="label-gem" /> Predictable Local Pricing
+            <CreditCard size={15} className="label-icon-blue" />
+            <span>{t.pricing.label}</span>
           </div>
-          <h2 className="section-title">
-            Transparent pricing in Cedis. <br />
-            No hidden fees.
-          </h2>
-          <p className="section-sub">
-            Invest in peace of mind. Every plan includes Paystack MoMo integration,
-            continuous software updates, and reliable data security.
-          </p>
+          <h2 className="section-title">{t.pricing.title}</h2>
+          <p className="section-sub">{t.pricing.subtitle}</p>
 
           {/* Billing Cycle Toggle */}
           <div className="pricing-billing-toggle">
@@ -95,7 +93,7 @@ export default function Pricing() {
                 setIsAnnual(false);
               }}
             >
-              Termly Billing (3 Terms / Year)
+              {t.pricing.termly}
             </button>
             <button
               type="button"
@@ -105,8 +103,8 @@ export default function Pricing() {
                 setIsAnnual(true);
               }}
             >
-              Annual Billing
-              <span className="save-pill">Save 20%</span>
+              <span>{t.pricing.annual}</span>
+              <span className="save-pill">{t.pricing.save}</span>
             </button>
           </div>
         </div>
@@ -125,7 +123,8 @@ export default function Pricing() {
               >
                 {tier.popular && (
                   <div className="popular-ribbon">
-                    <span>★ RECOMMENDED CHOICE</span>
+                    <Sparkles size={12} className="ribbon-star" />
+                    <span>RECOMMENDED</span>
                   </div>
                 )}
 
@@ -146,7 +145,7 @@ export default function Pricing() {
                 <ul className="tier-features-list">
                   {tier.features.map((feat) => (
                     <li key={feat}>
-                      <span className="check-icon">✓</span>
+                      <CheckCircle2 size={16} className="tier-check-icon" />
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -158,9 +157,7 @@ export default function Pricing() {
                   onClick={() => sound.playClick()}
                 >
                   <span>{tier.ctaText}</span>
-                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
+                  <ArrowRight size={16} />
                 </a>
               </div>
             );
@@ -170,11 +167,11 @@ export default function Pricing() {
         {/* Pricing Reassurance Banner */}
         <div className="pricing-reassurance">
           <div className="reassurance-item">
-            <span className="reassurance-icon">🔒</span>
+            <ShieldCheck size={20} className="reassurance-svg" />
             <span><strong>30-Day Money-Back Guarantee:</strong> Try Akademia risk-free during your first term.</span>
           </div>
           <div className="reassurance-item">
-            <span className="reassurance-icon">💳</span>
+            <CreditCard size={20} className="reassurance-svg" />
             <span><strong>Local Ghanaian Payment:</strong> Pay easily with MTN MoMo, Telecel Cash, or local Bank Cards.</span>
           </div>
         </div>

@@ -1,10 +1,13 @@
 import React from 'react';
+import { ArrowUp, ShieldCheck, Heart } from 'lucide-react';
 import logoWhiteImg from '../assets/images/brand-logo-horizontal-white.svg';
 import { sound } from '../utils/audio.js';
+import { useApp } from '../context/AppContext.jsx';
 
 export default function Footer() {
-  const scrollToTop = (e) => {
-    e.preventDefault();
+  const { t } = useApp();
+
+  const handleBackToTop = () => {
     sound.playClick();
     if (window.__lenis) {
       window.__lenis.scrollTo(0, { duration: 1.4 });
@@ -16,42 +19,48 @@ export default function Footer() {
   return (
     <footer className="footer-awwwards">
       <div className="container">
-        <div className="footer-status-bar">
-          <div className="status-indicator">
-            <span className="status-dot-live" />
-            <span>All Services Operational • Paystack Webhooks • Arkesel SMS Gateway • Desktop Engine</span>
+        {/* Top bar with Accessible Back to Top Button (status text removed per request) */}
+        <div className="footer-top-action-bar">
+          <div className="footer-status-pill">
+            <span className="status-dot-active" />
+            <span>Akademia Production Systems</span>
           </div>
-          <button type="button" className="footer-back-to-top" onClick={scrollToTop}>
-            <span>Back to top</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 15l-6-6-6 6" />
-            </svg>
+
+          <button
+            type="button"
+            className="footer-back-to-top-btn"
+            onClick={handleBackToTop}
+            aria-label="Scroll back to top of page"
+            title="Back to Top"
+          >
+            <span>{t.footer.backToTop}</span>
+            <ArrowUp size={15} className="arrow-icon" />
           </button>
         </div>
 
         <div className="footer-grid">
           <div className="footer-col-brand">
-            <a href="#home" className="footer-brand" onClick={scrollToTop}>
+            <a href="#home" className="footer-brand" onClick={handleBackToTop}>
               <img src={logoWhiteImg} alt="Akademia" width="274" height="64" />
             </a>
-            <p className="footer-desc">
-              The unified desktop operating system for Ghanaian education.
-              Attendance roll call, Paystack fee settlement, WAEC/GES 30/20/50 assessment,
-              and tamper-proof QR terminal reports.
-            </p>
+            <p className="footer-desc">{t.footer.desc}</p>
             <div className="footer-ghana-badge">
-              <span className="flag">🇬🇭</span> Built with pride for schools across Accra, Kumasi, Takoradi & Tamale
+              <span className="ghana-flag-badge">
+                <span className="gh-stripe red" />
+                <span className="gh-stripe gold" />
+                <span className="gh-stripe green" />
+              </span>
+              <span>{t.footer.builtFor}</span>
             </div>
           </div>
 
           <div className="footer-col">
             <h5>Navigation</h5>
             <ul>
-              <li><a href="#story">Story Mode</a></li>
               <li><a href="#features">Features</a></li>
-              <li><a href="#intercept">Result-Fee Intercept</a></li>
+              <li><a href="#watch">Interactive Tour</a></li>
+              <li><a href="#intercept">Result Fee Intercept</a></li>
               <li><a href="#action">Screenshots</a></li>
-              <li><a href="#watch">Video Tour</a></li>
             </ul>
           </div>
 
@@ -78,7 +87,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <p>© 2026 Akademia. All rights reserved.</p>
-          <p className="made">Engineered for Ghanaian Excellence</p>
+          <p className="made">Built for Ghanaian Excellence</p>
         </div>
       </div>
     </footer>

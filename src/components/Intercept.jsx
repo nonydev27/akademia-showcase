@@ -2,6 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import confetti from 'canvas-confetti';
+import {
+  Lock,
+  Unlock,
+  RotateCw,
+  CheckCircle2,
+  Sparkles,
+  Zap,
+  CreditCard,
+  FileCheck,
+  Send,
+  AlertCircle,
+} from 'lucide-react';
 import { sound } from '../utils/audio.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -79,19 +91,20 @@ export default function Intercept() {
           {/* Left Narrative Column */}
           <div className="intercept-narrative">
             <div className="intercept-label">
-              <span className="star-icon">✦</span> Signature Technology
+              <Sparkles size={14} className="star-icon" />
+              <span>Signature Technology</span>
             </div>
-            <h2>The Result-Fee Intercept</h2>
+            <h2>The Result Fee Intercept</h2>
             <p>
               The most decisive financial safeguarding engine in West African education.
               Report cards and official transcripts are cryptographically withheld until a
-              learner’s outstanding balance is reconciled to zero.
+              learner outstanding balance is reconciled to zero.
             </p>
             <p>
               Zero awkward debt conversations. Zero manual paper withholding registers.
-              The instant a guardian completes payment through Paystack (MTN MoMo, Telecel,
-              Card), the terminal PDF is generated, stamped with a verification QR code,
-              and dispatched directly to the guardian's phone.
+              The instant a guardian completes payment through Paystack across MTN MoMo, Telecel,
+              or Card, the terminal PDF is generated, stamped with a verification QR code,
+              and dispatched directly to the guardian phone.
             </p>
 
             {/* Interactive Live Playground Widget */}
@@ -104,10 +117,10 @@ export default function Intercept() {
               <div className="student-status-box">
                 <div className="student-info">
                   <strong>Kwame Mensah</strong>
-                  <span>Admission: BFA-042 • Form JHS 2A</span>
+                  <span>Admission BFA-042 • Form JHS 2A</span>
                 </div>
                 <div className="balance-pill">
-                  <small>Outstanding Balance:</small>
+                  <small>Outstanding Balance</small>
                   <strong>GHS {balance.toFixed(2)}</strong>
                 </div>
               </div>
@@ -116,20 +129,20 @@ export default function Intercept() {
                 <div className={`status-stamp ${simState}`}>
                   {simState === 'withheld' && (
                     <>
-                      <span className="stamp-icon">🔒</span>
+                      <Lock size={16} className="stamp-icon" />
                       <span>REPORT CARD WITHHELD</span>
                     </>
                   )}
                   {simState === 'processing' && (
                     <>
-                      <span className="stamp-icon spin">⟳</span>
+                      <RotateCw size={16} className="stamp-icon spin" />
                       <span>PROCESSING PAYSTACK WEBHOOK...</span>
                     </>
                   )}
                   {simState === 'released' && (
                     <>
-                      <span className="stamp-icon">✓</span>
-                      <span>REPORT CARD RELEASED & VERIFIED</span>
+                      <CheckCircle2 size={16} className="stamp-icon" />
+                      <span>REPORT CARD RELEASED AND VERIFIED</span>
                     </>
                   )}
                 </div>
@@ -143,11 +156,15 @@ export default function Intercept() {
                     onClick={handleSimulatePayment}
                     disabled={simState === 'processing'}
                   >
-                    <span>⚡ Simulate MoMo Payment (GHS 650.00)</span>
+                    <Zap size={16} />
+                    <span>Simulate MoMo Payment (GHS 650.00)</span>
                   </button>
                 ) : (
                   <div className="released-success-banner">
-                    <span className="success-txt">🎉 SMS & Email dispatched with PDF link!</span>
+                    <span className="success-txt">
+                      <CheckCircle2 size={15} />
+                      SMS and Email dispatched with verified PDF link
+                    </span>
                     <button type="button" className="btn-reset-sim" onClick={handleReset}>
                       Reset Simulator
                     </button>
@@ -161,9 +178,7 @@ export default function Intercept() {
           <div className="intercept-flow">
             <div className="flow-step">
               <div className="flow-step-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M2 10l10-5 10 5-10 5-10-5z" /><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5" /><path d="M22 10v6" />
-                </svg>
+                <FileCheck size={20} />
               </div>
               <div className="flow-step-text">
                 <strong>1. Exam Scores Finalized</strong>
@@ -173,9 +188,7 @@ export default function Intercept() {
 
             <div className="flow-step">
               <div className="flow-step-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <rect x={2} y={5} width={20} height={14} rx={2} /><line x1={2} y1={10} x2={22} y2={10} />
-                </svg>
+                <CreditCard size={20} />
               </div>
               <div className="flow-step-text">
                 <strong>2. Guardian Makes Mobile Payment</strong>
@@ -185,24 +198,20 @@ export default function Intercept() {
 
             <div className="flow-step">
               <div className="flow-step-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
+                <Zap size={20} />
               </div>
               <div className="flow-step-text">
-                <strong>3. Real-Time Paystack Webhook</strong>
+                <strong>3. Real Time Paystack Webhook</strong>
                 Akademia listens to live server webhooks, verifies the settlement in milliseconds, and clears the ledger.
               </div>
             </div>
 
             <div className="flow-step">
               <div className="flow-step-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" />
-                </svg>
+                <Send size={20} />
               </div>
               <div className="flow-step-text">
-                <strong>4. Instant Dispatch & QR Verification</strong>
+                <strong>4. Instant Dispatch and QR Verification</strong>
                 Withholding lock disengages. The official signed PDF is rendered, stamped with a verification QR code, and SMS alert is sent.
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Sparkles, RotateCw, Pause, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { screens } from '../data/screens.js';
 import { sound } from '../utils/audio.js';
 
@@ -119,7 +120,8 @@ export default function DemoReel() {
       <div className="container">
         <div className="watch-intro">
           <div className="section-label">
-            <span className="label-gem" /> Interactive Circular Showcase
+            <Sparkles size={14} className="label-icon-blue" />
+            <span>Interactive Circular Showcase</span>
           </div>
           <h2 className="section-title">See Akademia in motion</h2>
           <p className="section-sub">
@@ -151,7 +153,8 @@ export default function DemoReel() {
                     <span className="dot dot-max" />
                   </div>
                   <div className="macbook-title">
-                    <span className="app-icon">✦</span> Akademia Desktop — {activeScene.label}
+                    <Sparkles size={13} className="app-icon" />
+                    <span>Akademia Desktop — {activeScene.label}</span>
                   </div>
                   <div className="macbook-status-pill">
                     <span className="pulse-indicator" />
@@ -204,7 +207,7 @@ export default function DemoReel() {
               onClick={prevScene}
               aria-label="Previous screen"
             >
-              ‹
+              <ChevronLeft size={18} />
             </button>
 
             <button
@@ -215,8 +218,12 @@ export default function DemoReel() {
                 setIsOrbiting(!isOrbiting);
               }}
             >
-              <span className="orbit-spin-icon">{isOrbiting ? '⟳' : '⏸'}</span>
-              <span>{isOrbiting ? 'Auto-Orbit: Active' : 'Orbit: Paused'}</span>
+              {isOrbiting ? (
+                <RotateCw size={14} className="orbit-spin-icon" />
+              ) : (
+                <Pause size={14} className="orbit-spin-icon" />
+              )}
+              <span>{isOrbiting ? 'Auto Orbit Active' : 'Orbit Paused'}</span>
             </button>
 
             <button
@@ -225,7 +232,7 @@ export default function DemoReel() {
               onClick={nextScene}
               aria-label="Next screen"
             >
-              ›
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -268,7 +275,8 @@ export default function DemoReel() {
                       <div className="cylinder-img-box">
                         <img src={item.image} alt={item.thumbLabel} />
                         <div className="card-hover-overlay">
-                          <span>Inspect on MacBook ↗</span>
+                          <span>Inspect on MacBook</span>
+                          <ArrowUpRight size={13} />
                         </div>
                       </div>
                     </div>

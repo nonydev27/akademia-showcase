@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Compass } from 'lucide-react';
 import { sound } from '../utils/audio.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -8,28 +9,28 @@ gsap.registerPlugin(ScrollTrigger);
 const STEPS = [
   {
     num: '01',
-    title: 'School registers and tenant is provisioned',
-    desc: 'The Platform Admin creates an isolated school tenant with a unique local code (e.g., VIS for Vilaworld International School, BFA for Brightfield Academy). The school is live immediately with zero server setup required.',
+    title: 'School is registered and tenant is provisioned',
+    desc: 'The school is assigned a unique institutional code (e.g., VIS for Vilaworld International School, BFA for Brightfield Academy). The tenant goes live immediately with dedicated database security and zero server configuration required.',
   },
   {
     num: '02',
-    title: 'Admin configures classes, subjects, and staff accounts',
-    desc: 'The School Admin defines academic terms, class divisions (Primary 1-6, JHS 1-3, SHS 1-3), subjects, and teacher credentials. Educators are assigned specific class-subject pairs so marking permissions remain strictly isolated.',
+    title: 'Administrator configures classes, subjects, and staff accounts',
+    desc: 'The School Administrator defines academic terms, class divisions (Primary 1 to 6, JHS 1 to 3, SHS 1 to 3), subjects, and teacher credentials. Educators are assigned specific class-subject combinations so grading permissions remain strictly isolated.',
   },
   {
     num: '03',
-    title: 'Learners are enrolled via bulk CSV or manual intake',
-    desc: 'Import hundreds of students from an existing Excel/CSV sheet in seconds or register them individually. Clean admission numbers are automatically generated, and guardians are linked for SMS and fee billing.',
+    title: 'Students are enrolled via bulk CSV or individual intake',
+    desc: 'Import hundreds of students from an existing Excel or CSV spreadsheet in seconds or register them individually. Clean admission numbers are generated automatically, and guardians are linked for SMS and tuition billing.',
   },
   {
     num: '04',
-    title: 'Daily operations commence — attendance, grades, fees',
-    desc: 'Teachers take morning roll call on their laptops. Continuous Assessment (CA) scores and terminal marks are entered as terms progress. Fees paid via MTN MoMo or Telecel Cash reflect on the ledger in sub-second time.',
+    title: 'Daily operations commence: attendance, grades, and fees',
+    desc: 'Teachers record morning roll call on their laptops. Continuous Assessment scores and terminal marks are entered as the term progresses. Fees paid via MTN MoMo or Telecel Cash reflect on the ledger in real time.',
   },
   {
     num: '05',
-    title: 'Report cards generated & released via Result-Fee Intercept',
-    desc: 'At term completion, administrators publish final results. The Result-Fee Intercept automatically holds cards with unpaid balances. Once cleared, official PDF reports with tamper-proof QR verification are dispatched instantly.',
+    title: 'Report cards generated and released via Result Fee Intercept',
+    desc: 'At term completion, administrators publish final results. The Result Fee Intercept automatically holds cards with unpaid balances. Once cleared, official PDF reports with tamper proof QR verification are dispatched instantly.',
   },
 ];
 
@@ -83,15 +84,16 @@ export default function HowItWorks() {
       <div className="container">
         <div className="how-intro">
           <div className="section-label">
-            <span className="label-gem" /> Turnkey Deployment
+            <Compass size={15} className="label-icon-blue" />
+            <span>Turnkey Deployment</span>
           </div>
           <h2 className="section-title">
             From setup to operational <br />
             in under sixty minutes
           </h2>
           <p className="section-sub">
-            Designed to require zero technical gymnastics. Your school administration
-            can be fully onboarded and running within an hour.
+            Designed to require zero technical friction. Your school administration
+            can be fully onboarded and running smoothly within an hour.
           </p>
         </div>
 
@@ -100,7 +102,7 @@ export default function HowItWorks() {
             <div className="how-connector-line-fill" />
           </div>
 
-          {STEPS.map((step, idx) => (
+          {STEPS.map((step) => (
             <div
               key={step.num}
               className="how-step-item"
