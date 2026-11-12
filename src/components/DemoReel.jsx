@@ -1,106 +1,283 @@
-import React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { screens } from '../data/screens.js';
-
-const DURATION = 4200;
+import { sound } from '../utils/audio.js';
 
 export default function DemoReel() {
-  const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(
-    () => !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
-  );
-  const elapsedRef = useRef(0);
-  const startedAtRef = useRef(0);
-  const scene = screens[index];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isOrbiting, setIsOrbiting] = useState(true);
+  const [radius, setRadius] = useState(380);
+  const orbitAngleRef = useRef(0);
+  const targetAngleRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startAngleRef = useRef(0);
+  const ringRef = useRef(null);
+  const animFrameRef = useRef(null);
 
+  const numScreens = screens.length;
+  const anglePerItem = 360 / numScreens;
+
+  // Responsive radius calculation
   useEffect(() => {
-    if (!playing) return undefined;
+    const updateRadius = () => {
+      const width = window.innerWidth;
+      if (width < 600) {
+        setRadius(230);
+      } else if (width < 900) {
+        setRadius(300);
+      } else {
+        setRadius(380);
+      }
+    };
+    updateRadius();
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
+  }, []);
 
-    startedAtRef.current = performance.now();
-    const timer = window.setTimeout(() => {
-      elapsedRef.current = 0;
-      setIndex((current) => (current + 1) % screens.length);
-    }, Math.max(0, DURATION - elapsedRef.current));
+  // Set active item and snap angle
+  const selectScene = useCallback(
+    (index) => {
+      sound.playStep();
+      setActiveIndex(index);
+      // Snap target angle so that item is at 0 degrees (front)
+      targetAngleRef.current = -index * anglePerItem;
+    },
+    [anglePerItem]
+  );
 
-    return () => window.clearTimeout(timer);
-  }, [playing, index]);
+  const nextScene = useCallback(() => {
+    selectScene((activeIndex + 1) % numScreens);
+  }, [activeIndex, numScreens, selectScene]);
 
-  const togglePlay = () => {
-    if (playing) {
-      elapsedRef.current = Math.min(
-        DURATION,
-        elapsedRef.current + performance.now() - startedAtRef.current,
-      );
-    }
-    setPlaying((current) => !current);
+  const prevScene = useCallback(() => {
+    selectScene((activeIndex - 1 + numScreens) % numScreens);
+  }, [activeIndex, numScreens, selectScene]);
+
+  // Animation Loop for continuous smooth rotation & lerping
+  useEffect(() => {
+    const loop = () => {
+      if (isOrbiting && !isDraggingRef.current) {
+        // Slow continuous ambient drift when auto-orbiting
+        targetAngleRef.current -= 0.08;
+      }
+
+      // Smooth lerp to target angle
+      orbitAngleRef.current += (targetAngleRef.current - orbitAngleRef.current) * 0.08;
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `rotateX(-8deg) rotateY(${orbitAngleRef.current}deg)`;
+      }
+
+      // Compute which item is currently closest to the front (0 deg)
+      const normalized = ((-orbitAngleRef.current % 360) + 360) % 360;
+      const closestIndex = Math.round(normalized / anglePerItem) % numScreens;
+      if (closestIndex !== activeIndex && !isDraggingRef.current) {
+        setActiveIndex(closestIndex);
+      }
+
+      animFrameRef.current = requestAnimationFrame(loop);
+    };
+
+    animFrameRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animFrameRef.current);
+  }, [isOrbiting, anglePerItem, numScreens, activeIndex]);
+
+  // Drag interaction handlers
+  const handlePointerDown = (e) => {
+    isDraggingRef.current = true;
+    startXRef.current = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    startAngleRef.current = targetAngleRef.current;
   };
 
-  const selectScene = (nextIndex) => {
-    elapsedRef.current = 0;
-    setIndex(nextIndex);
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const deltaX = clientX - startXRef.current;
+    targetAngleRef.current = startAngleRef.current + deltaX * 0.35;
   };
+
+  const handlePointerUp = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    // Snap to nearest item
+    const snapped = Math.round(targetAngleRef.current / anglePerItem) * anglePerItem;
+    targetAngleRef.current = snapped;
+    const normalized = ((-snapped % 360) + 360) % 360;
+    const closest = Math.round(normalized / anglePerItem) % numScreens;
+    setActiveIndex(closest);
+    sound.playClick();
+  };
+
+  const activeScene = screens[activeIndex];
 
   return (
-    <section className="watch" id="watch">
+    <section className="watch-section" id="watch">
+      <div className="section-watermark" aria-hidden="true">
+        IN MOTION
+      </div>
+
       <div className="container">
         <div className="watch-intro">
-          <div className="section-label" data-reveal>Product Demo</div>
-          <h2 className="section-title" data-reveal>See Akademia in motion</h2>
-          <p className="section-sub" data-reveal>A guided reel through real Akademia screens, with an explanation of what each one shows.</p>
-        </div>
-        <div data-reveal="scale">
-          <div className={`demo-player${playing ? '' : ' paused'}`} id="demoPlayer">
-          <div className="demo-chrome">
-            <span className="demo-live"><span className="dot" /> Product tour</span>
-            <span className="demo-chrome-title">Akademia — Windows Desktop App</span>
-            <span className="demo-chrome-time">SCENE {index + 1} / {screens.length}</span>
+          <div className="section-label">
+            <span className="label-gem" /> Interactive Circular Showcase
           </div>
-          <div className="demo-frame">
-            {screens.map((item, itemIndex) => (
-              <div
-                key={item.id}
-                className={`demo-scene${itemIndex === index ? ' active' : ''}`}
-                aria-hidden={itemIndex !== index}
-              >
-                <img src={item.image} alt={item.alt} loading={itemIndex === index ? 'eager' : 'lazy'} />
+          <h2 className="section-title">See Akademia in motion</h2>
+          <p className="section-sub">
+            Orbit through every Ghanaian school workspace below. Click any card in the
+            continuous 3D carousel to project it directly onto the MacBook Pro above.
+          </p>
+        </div>
+
+        {/* ── PART 1: THE MACBOOK PRO AT THE TOP ── */}
+        <div className="macbook-showcase-wrap">
+          <div className="macbook-ambient-glow" />
+
+          <div className="macbook-device">
+            {/* Screen Lid Assembly */}
+            <div className="macbook-lid">
+              {/* FaceTime HD Camera Notch */}
+              <div className="macbook-notch">
+                <span className="notch-camera" />
+                <span className="notch-sensor" />
               </div>
-            ))}
-            <div className="demo-caption" aria-live="polite">
-              <span className="tag">{scene.label}</span>
-              <h4>{scene.title}</h4>
-              <p>{scene.points[0]}</p>
+
+              {/* Display Bezel */}
+              <div className="macbook-screen">
+                {/* Simulated macOS Menu Bar */}
+                <div className="macbook-menubar">
+                  <div className="macbook-dots">
+                    <span className="dot dot-close" />
+                    <span className="dot dot-min" />
+                    <span className="dot dot-max" />
+                  </div>
+                  <div className="macbook-title">
+                    <span className="app-icon">✦</span> Akademia Desktop — {activeScene.label}
+                  </div>
+                  <div className="macbook-status-pill">
+                    <span className="pulse-indicator" />
+                    <span>60 FPS</span>
+                  </div>
+                </div>
+
+                {/* Main Screen Viewport */}
+                <div className="macbook-screen-canvas">
+                  {screens.map((item, idx) => (
+                    <img
+                      key={item.id}
+                      src={item.image}
+                      alt={item.alt}
+                      className={`macbook-screen-img ${idx === activeIndex ? 'active' : ''}`}
+                      loading={idx === activeIndex ? 'eager' : 'lazy'}
+                    />
+                  ))}
+
+                  {/* High-tech Screen Scanline Sweep */}
+                  <div className="screen-scanline" />
+
+                  {/* Caption Overlay */}
+                  <div className="macbook-caption-card">
+                    <div className="caption-tag-row">
+                      <span className="caption-badge">{activeScene.thumbLabel}</span>
+                      <span className="caption-count">
+                        0{activeIndex + 1} / 0{screens.length}
+                      </span>
+                    </div>
+                    <h4>{activeScene.title}</h4>
+                    <p>{activeScene.points[0]}</p>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Aluminum MacBook Lower Base / Keyboard Deck */}
+            <div className="macbook-base">
+              <div className="macbook-notch-indent" />
+            </div>
+            <div className="macbook-shadow" />
+          </div>
+
+          {/* Interactive Controls Bar for the MacBook */}
+          <div className="macbook-controls-bar">
             <button
               type="button"
-              className="demo-playbtn"
-              onClick={togglePlay}
-              aria-label={playing ? 'Pause demo' : 'Play demo'}
+              className="btn-orbit-control"
+              onClick={prevScene}
+              aria-label="Previous screen"
             >
-              <svg className="ic-pause" width={22} height={22} viewBox="0 0 24 24" fill="currentColor" style={{ display: playing ? '' : 'none' }}>
-                <rect x={6} y={5} width={4} height={14} rx={1} />
-                <rect x={14} y={5} width={4} height={14} rx={1} />
-              </svg>
-              <svg className="ic-play" width={22} height={22} viewBox="0 0 24 24" fill="currentColor" style={{ display: playing ? 'none' : '' }}>
-                <path d="M8 5v14l11-7z" />
-              </svg>
+              ‹
+            </button>
+
+            <button
+              type="button"
+              className={`btn-orbit-toggle ${isOrbiting ? 'active' : ''}`}
+              onClick={() => {
+                sound.playClick();
+                setIsOrbiting(!isOrbiting);
+              }}
+            >
+              <span className="orbit-spin-icon">{isOrbiting ? '⟳' : '⏸'}</span>
+              <span>{isOrbiting ? 'Auto-Orbit: Active' : 'Orbit: Paused'}</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn-orbit-control"
+              onClick={nextScene}
+              aria-label="Next screen"
+            >
+              ›
             </button>
           </div>
-          <div className="demo-progress" aria-label="Choose a demo scene">
-            {screens.map((item, itemIndex) => (
-              <button
-                type="button"
-                key={item.id}
-                className={`demo-seg${itemIndex === index ? ' active' : itemIndex < index ? ' complete' : ''}`}
-                aria-label={`Show ${item.label}`}
-                aria-current={itemIndex === index ? 'true' : undefined}
-                onClick={() => selectScene(itemIndex)}
-              >
-                <span className="fill" style={{ '--duration': `${DURATION}ms` }} />
-              </button>
-            ))}
+        </div>
+
+        {/* ── PART 2: THE CONTINUOUS CIRCULAR 3D CAROUSEL BENEATH ── */}
+        <div
+          className="carousel-3d-cylinder-wrap"
+          onMouseDown={handlePointerDown}
+          onMouseMove={handlePointerMove}
+          onMouseUp={handlePointerUp}
+          onMouseLeave={handlePointerUp}
+          onTouchStart={handlePointerDown}
+          onTouchMove={handlePointerMove}
+          onTouchEnd={handlePointerUp}
+        >
+          <div className="cylinder-instruction">
+            <span>Drag horizontally to rotate carousel • Click card to inspect</span>
+          </div>
+
+          <div className="cylinder-stage">
+            <div ref={ringRef} className="cylinder-ring">
+              {screens.map((item, idx) => {
+                const itemAngle = idx * anglePerItem;
+                const isActive = idx === activeIndex;
+
+                return (
+                  <div
+                    key={item.id}
+                    className={`cylinder-card ${isActive ? 'active' : ''}`}
+                    style={{
+                      transform: `rotateY(${itemAngle}deg) translateZ(${radius}px)`,
+                    }}
+                    onClick={() => selectScene(idx)}
+                  >
+                    <div className="cylinder-card-inner">
+                      <div className="cylinder-card-header">
+                        <span className="card-idx">0{idx + 1}</span>
+                        <span className="card-name">{item.thumbLabel}</span>
+                      </div>
+                      <div className="cylinder-img-box">
+                        <img src={item.image} alt={item.thumbLabel} />
+                        <div className="card-hover-overlay">
+                          <span>Inspect on MacBook ↗</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </section>
   );

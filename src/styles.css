@@ -3062,3 +3062,499 @@ section {
     padding-top: 125px;
   }
 }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   SEE AKADEMIA IN MOTION: MACBOOK PRO & 3D CIRCULAR CAROUSEL
+   ════════════════════════════════════════════════════════════════════ */
+.watch-section {
+  padding: 130px 0 140px;
+  background: linear-gradient(180deg, var(--card) 0%, #0d1020 12%, #0a0d1a 88%, var(--warm) 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.watch-section .section-title {
+  color: #fff;
+}
+
+.watch-section .section-sub {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 auto;
+}
+
+.watch-intro {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── 1. THE MACBOOK PRO MOCKUP (TOP) ── */
+.macbook-showcase-wrap {
+  max-width: 960px;
+  margin: 0 auto 5rem;
+  position: relative;
+  z-index: 3;
+}
+
+.macbook-ambient-glow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 80%;
+  background: radial-gradient(ellipse 65% 55% at 50% 40%, rgba(37, 99, 235, 0.35) 0%, rgba(245, 158, 11, 0.12) 40%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.macbook-device {
+  position: relative;
+  z-index: 2;
+  perspective: 1200px;
+}
+
+/* MacBook Lid Assembly */
+.macbook-lid {
+  background: #141724;
+  border: 1.5px solid #2d334d;
+  border-radius: 20px 20px 4px 4px;
+  padding: 14px 14px 18px;
+  position: relative;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Apple Notch */
+.macbook-notch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 20px;
+  background: #090b12;
+  border-radius: 0 0 10px 10px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.notch-camera {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1a2238;
+  border: 1px solid #2f3e66;
+  box-shadow: inset 0 0 3px #38bdf8;
+}
+
+.notch-sensor {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #151b2e;
+}
+
+/* Screen Bezel & Display */
+.macbook-screen {
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.macbook-menubar {
+  height: 28px;
+  background: linear-gradient(180deg, #1f2438, #141726);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  z-index: 4;
+}
+
+.macbook-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.macbook-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-close { background: #ff5f57; }
+.dot-min   { background: #febc2e; }
+.dot-max   { background: #28c840; }
+
+.macbook-title {
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.macbook-title .app-icon {
+  color: var(--blue-lt);
+}
+
+.macbook-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--sage);
+  background: rgba(16, 185, 129, 0.15);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.pulse-indicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sage);
+  box-shadow: 0 0 6px var(--sage);
+}
+
+/* Screen Viewport */
+.macbook-screen-canvas {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: #090b14;
+  overflow: hidden;
+}
+
+.macbook-screen-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.macbook-screen-img.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.screen-scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(56, 189, 248, 0.04) 50%, transparent 100%);
+  background-size: 100% 8px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Floating Caption Card on Screen */
+.macbook-caption-card {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  right: 20px;
+  max-width: 560px;
+  background: rgba(12, 15, 29, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 14px 18px;
+  z-index: 5;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5);
+}
+
+.caption-tag-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.caption-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-lt);
+}
+
+.caption-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  font-variant-numeric: tabular-nums;
+}
+
+.macbook-caption-card h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.macbook-caption-card p {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* MacBook Base Chassis */
+.macbook-base {
+  height: 16px;
+  background: linear-gradient(180deg, #b0b6c6 0%, #767d94 40%, #444a5e 100%);
+  border-radius: 0 0 16px 16px;
+  position: relative;
+  margin: 0 -30px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.macbook-notch-indent {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 5px;
+  background: #1c2132;
+  border-radius: 0 0 5px 5px;
+}
+
+.macbook-shadow {
+  height: 25px;
+  background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(0, 0, 0, 0.6) 0%, transparent 75%);
+  margin: 0 auto;
+}
+
+/* Controls Bar */
+.macbook-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 1.5rem;
+}
+
+.btn-orbit-control {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s var(--ease);
+}
+
+.btn-orbit-control:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  transform: scale(1.1);
+}
+
+.btn-orbit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.btn-orbit-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.btn-orbit-toggle.active {
+  border-color: var(--blue);
+  background: rgba(37, 99, 235, 0.25);
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+
+.orbit-spin-icon {
+  font-size: 1rem;
+}
+
+/* ── 2. THE CONTINUOUS CIRCULAR 3D CAROUSEL BENEATH ── */
+.carousel-3d-cylinder-wrap {
+  position: relative;
+  perspective: 1400px;
+  padding: 2rem 0 4rem;
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel-3d-cylinder-wrap:active {
+  cursor: grabbing;
+}
+
+.cylinder-instruction {
+  text-align: center;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 2.5rem;
+}
+
+.cylinder-stage {
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cylinder-ring {
+  width: 220px;
+  height: 140px;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.05s linear;
+}
+
+.cylinder-card {
+  position: absolute;
+  width: 220px;
+  height: 140px;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  transition: filter 0.3s, opacity 0.3s;
+}
+
+.cylinder-card-inner {
+  width: 100%;
+  height: 100%;
+  background: #111526;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+}
+
+.cylinder-card:hover .cylinder-card-inner {
+  transform: scale(1.06);
+  border-color: rgba(37, 99, 235, 0.6);
+  box-shadow: 0 16px 35px var(--blue-glow);
+}
+
+.cylinder-card.active .cylinder-card-inner {
+  border-color: var(--blue);
+  box-shadow: 0 0 28px var(--blue-glow);
+}
+
+.cylinder-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #171c32;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-idx {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--gold-lt);
+}
+
+.card-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.cylinder-img-box {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #090c17;
+}
+
+.cylinder-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.card-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(37, 99, 235, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+.card-hover-overlay span {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.cylinder-card:hover .card-hover-overlay {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .macbook-base {
+    margin: 0 -15px;
+  }
+  .macbook-caption-card {
+    position: static;
+    margin-top: 10px;
+    max-width: 100%;
+  }
+  .cylinder-ring {
+    width: 180px;
+    height: 115px;
+  }
+  .cylinder-card {
+    width: 180px;
+    height: 115px;
+  }
+}
