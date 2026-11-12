@@ -1,48 +1,122 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { sound } from '../utils/audio.js';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const STEPS = [
+  {
+    num: '01',
+    title: 'School registers and tenant is provisioned',
+    desc: 'The Platform Admin creates an isolated school tenant with a unique local code (e.g., VIS for Vilaworld International School, BFA for Brightfield Academy). The school is live immediately with zero server setup required.',
+  },
+  {
+    num: '02',
+    title: 'Admin configures classes, subjects, and staff accounts',
+    desc: 'The School Admin defines academic terms, class divisions (Primary 1-6, JHS 1-3, SHS 1-3), subjects, and teacher credentials. Educators are assigned specific class-subject pairs so marking permissions remain strictly isolated.',
+  },
+  {
+    num: '03',
+    title: 'Learners are enrolled via bulk CSV or manual intake',
+    desc: 'Import hundreds of students from an existing Excel/CSV sheet in seconds or register them individually. Clean admission numbers are automatically generated, and guardians are linked for SMS and fee billing.',
+  },
+  {
+    num: '04',
+    title: 'Daily operations commence — attendance, grades, fees',
+    desc: 'Teachers take morning roll call on their laptops. Continuous Assessment (CA) scores and terminal marks are entered as terms progress. Fees paid via MTN MoMo or Telecel Cash reflect on the ledger in sub-second time.',
+  },
+  {
+    num: '05',
+    title: 'Report cards generated & released via Result-Fee Intercept',
+    desc: 'At term completion, administrators publish final results. The Result-Fee Intercept automatically holds cards with unpaid balances. Once cleared, official PDF reports with tamper-proof QR verification are dispatched instantly.',
+  },
+];
+
 export default function HowItWorks() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      // Animate steps with glowing reveal
+      gsap.from('.how-step-item', {
+        x: -45,
+        opacity: 0,
+        stagger: 0.18,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.how-steps-track',
+          start: 'top 80%',
+        },
+      });
+
+      // Animate connector line height scrubbing
+      gsap.fromTo(
+        '.how-connector-line-fill',
+        { height: '0%' },
+        {
+          height: '100%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.how-steps-track',
+            start: 'top 70%',
+            end: 'bottom 80%',
+            scrub: true,
+          },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-  <section className="how" id="how">
-    <div className="container">
-      <div className="section-label" data-reveal>How It Works</div>
-      <h2 className="section-title" data-reveal>From setup to running<br />in under an hour</h2>
-      <div className="how-steps">
-        <div className="step" data-reveal="left">
-          <div className="step-num">1</div>
-          <div className="step-body">
-            <h3>School registers and gets onboarded</h3>
-            <p>The Platform Admin creates a school tenant with a unique code (e.g., VIS for Vilaworld International School), sets the subscription plan, and creates the School Admin account. The school is live immediately.</p>
+    <section ref={sectionRef} className="how-section" id="how">
+      <div className="section-watermark" aria-hidden="true">
+        WORKFLOW
+      </div>
+
+      <div className="container">
+        <div className="how-intro">
+          <div className="section-label">
+            <span className="label-gem" /> Turnkey Deployment
           </div>
+          <h2 className="section-title">
+            From setup to operational <br />
+            in under sixty minutes
+          </h2>
+          <p className="section-sub">
+            Designed to require zero technical gymnastics. Your school administration
+            can be fully onboarded and running within an hour.
+          </p>
         </div>
-        <div className="step" data-reveal="left">
-          <div className="step-num">2</div>
-          <div className="step-body">
-            <h3>Admin sets up classes, subjects, and staff</h3>
-            <p>The School Admin creates academic years, terms, class divisions (JHS 2A, JHS 2B, SHS 1…), subjects, and staff accounts. Teachers are assigned specific class-subject combinations so they only see what's relevant to them.</p>
+
+        <div className="how-steps-track">
+          <div className="how-connector-line">
+            <div className="how-connector-line-fill" />
           </div>
-        </div>
-        <div className="step" data-reveal="left">
-          <div className="step-num">3</div>
-          <div className="step-body">
-            <h3>Students are enrolled (bulk or one by one)</h3>
-            <p>Import students from a CSV or add them individually. Akademia assigns clean admission numbers automatically. Guardians are linked to students for notifications. Students are enrolled into classes per term.</p>
-          </div>
-        </div>
-        <div className="step" data-reveal="left">
-          <div className="step-num">4</div>
-          <div className="step-body">
-            <h3>Daily operations begin — attendance, grades, fees</h3>
-            <p>Teachers mark attendance each morning. Grades are entered at end of assessment periods. Fee payments are recorded as they come in. Everything updates in real-time across the admin dashboard.</p>
-          </div>
-        </div>
-        <div className="step" data-reveal="left">
-          <div className="step-num">5</div>
-          <div className="step-body">
-            <h3>Report cards generated and released</h3>
-            <p>At end of term, the Admin publishes results. The Result-Fee Intercept holds cards for students with outstanding fees. Once cleared, PDFs are generated and dispatched to guardians via email and SMS automatically.</p>
-          </div>
+
+          {STEPS.map((step, idx) => (
+            <div
+              key={step.num}
+              className="how-step-item"
+              onMouseEnter={() => sound.playStep()}
+            >
+              <div className="step-num-pill">
+                <span>{step.num}</span>
+              </div>
+              <div className="step-content">
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 }

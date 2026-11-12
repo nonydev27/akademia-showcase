@@ -1,122 +1,139 @@
-import { useEffect, useState, useCallback, useRef } from "react";
-import { screens } from "../data/screens.js";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { screens } from '../data/screens.js';
+import { sound } from '../utils/audio.js';
 
 export default function Carousel() {
   const [idx, setIdx] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const timerRef = useRef(null);
-  const reduceMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const go = useCallback(
-    (n) => setIdx((n + screens.length) % screens.length),
-    [],
-  );
+  const go = useCallback((n) => {
+    sound.playClick();
+    setIdx((n + screens.length) % screens.length);
+  }, []);
 
-  const restart = useCallback(() => {
-    clearInterval(timerRef.current);
-    if (!reduceMotion)
-      timerRef.current = setInterval(
-        () => setIdx((i) => (i + 1) % screens.length),
-        5000,
-      );
-  }, [reduceMotion]);
+  const next = useCallback(() => {
+    go(idx + 1);
+  }, [idx, go]);
 
+  const prev = useCallback(() => {
+    go(idx - 1);
+  }, [idx, go]);
+
+  // Auto-play timer
   useEffect(() => {
-    restart();
+    if (!isAutoPlaying) return;
+    timerRef.current = setInterval(() => {
+      setIdx((i) => (i + 1) % screens.length);
+    }, 6000);
     return () => clearInterval(timerRef.current);
-  }, [restart]);
+  }, [isAutoPlaying]);
 
-  const screen = screens[idx];
+  const currentScreen = screens[idx];
 
   return (
-    <section
-      className="action"
-      id="action"
-      onMouseEnter={() => clearInterval(timerRef.current)}
-      onMouseLeave={restart}
-    >
+    <section className="action" id="action">
+      <div className="section-watermark" aria-hidden="true">
+        GALLERY
+      </div>
+
       <div className="container">
         <div className="action-intro">
-          <div className="section-label" data-reveal>
-            See It In Action
+          <div className="section-label">
+            <span className="label-gem" /> Detailed Screen Tour
           </div>
-          <h2 className="section-title" data-reveal>
-            A look inside Akademia
+          <h2 className="section-title">
+            Every screen engineered for speed, <br />
+            clarity, and ease of use
           </h2>
-          <p className="section-sub" data-reveal>
-            Every screen is purpose-built. These are real captures from the
-            desktop app — clean, fast, and focused so administrators and
-            teachers can get their work done without friction.
+          <p className="section-sub">
+            Take a deep-dive tour into the eight primary workspaces of the Akademia desktop application.
           </p>
         </div>
-        <div className="carousel" id="screensCarousel" data-reveal="scale">
-          <div className="carousel-stage">
-            <button
-              className="car-arrow car-prev"
-              aria-label="Previous screenshot"
-              onClick={() => {
-                go(idx - 1);
-                restart();
-              }}
-            >
-              ‹
-            </button>
-            <div className="carousel-track">
-              {screens.map((s, i) => (
-                <div
-                  key={s.id}
-                  className={`carousel-slide${i === idx ? " active" : ""}`}
-                >
-                  <img src={s.image} alt={s.alt} loading="lazy" />
-                </div>
-              ))}
+
+        <div
+          className="carousel-unified"
+          onMouseEnter={() => setIsAutoPlaying(false)}
+          onMouseLeave={() => setIsAutoPlaying(true)}
+        >
+          {/* Main Showcase Stage */}
+          <div className="carousel-stage-box">
+            <div className="window-bar">
+              <div className="dots">
+                <span className="wdot" />
+                <span className="wdot" />
+                <span className="wdot" />
+              </div>
+              <div className="window-title">
+                Akademia — {currentScreen.label}
+              </div>
+              <span className="window-pill">Screen {idx + 1} of {screens.length}</span>
             </div>
-            <button
-              className="car-arrow car-next"
-              aria-label="Next screenshot"
-              onClick={() => {
-                go(idx + 1);
-                restart();
-              }}
-            >
-              ›
-            </button>
-            <div className="carousel-dots">
-              {screens.map((s, i) => (
-                <button
-                  key={s.id}
-                  className={`car-dot${i === idx ? " active" : ""}`}
-                  aria-label={`Go to slide ${i + 1}`}
-                  onClick={() => {
-                    go(i);
-                    restart();
-                  }}
-                />
-              ))}
+
+            <div className="carousel-view-area">
+              <img
+                src={currentScreen.image}
+                alt={currentScreen.alt}
+                className="carousel-main-image"
+                loading="eager"
+              />
+
+              {/* Prev / Next Floating Navigation Arrows */}
+              <button
+                type="button"
+                className="car-arrow car-prev"
+                onClick={prev}
+                aria-label="Previous screenshot"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                className="car-arrow car-next"
+                onClick={next}
+                aria-label="Next screenshot"
+              >
+                ›
+              </button>
             </div>
           </div>
-          <div className="carousel-meta">
-            <h4>{screen.label}</h4>
-            <p className="car-tagline">{screen.title}</p>
-            <ul className="car-points">
-              {screen.points.map((p, i) => (
-                <li key={i}>{p}</li>
+
+          {/* Screen Details & Key Feature Points */}
+          <div className="carousel-details-panel">
+            <div className="carousel-details-header">
+              <span className="car-tagline">
+                ✦ Feature Workspace: {currentScreen.thumbLabel}
+              </span>
+              <h3>{currentScreen.title}</h3>
+            </div>
+
+            <ul className="car-points-grid">
+              {currentScreen.points.map((point) => (
+                <li key={point}>
+                  <span className="point-check">✓</span>
+                  <span>{point}</span>
+                </li>
               ))}
             </ul>
           </div>
-          <div className="carousel-thumbs">
-            {screens.map((s, i) => (
+
+          {/* Interactive Thumbnails Selector */}
+          <div className="carousel-thumbs-track">
+            {screens.map((screen, i) => (
               <button
-                key={s.id}
-                className={`car-thumb${i === idx ? " active" : ""}`}
-                aria-label={s.label}
+                key={screen.id}
+                type="button"
+                className={`car-thumb-item ${i === idx ? 'active' : ''}`}
                 onClick={() => {
-                  go(i);
-                  restart();
+                  sound.playStep();
+                  setIdx(i);
                 }}
+                aria-label={`View ${screen.thumbLabel}`}
               >
-                <img src={s.image} alt="" />
+                <div className="thumb-img-wrap">
+                  <img src={screen.image} alt={screen.thumbLabel} />
+                </div>
+                <span className="thumb-name">{screen.thumbLabel}</span>
               </button>
             ))}
           </div>

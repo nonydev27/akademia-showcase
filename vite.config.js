@@ -6,5 +6,17 @@ export default defineConfig({
   base: './',
   server: {
     port: 3000,
-  }
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          gsap: ['gsap', 'gsap/ScrollTrigger'],
+          vendor: ['react', 'react-dom', 'lenis'],
+        },
+      },
+    },
+  },
 });
