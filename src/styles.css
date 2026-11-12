@@ -336,9 +336,9 @@
       text-transform: uppercase; color: var(--blue-dk);
       margin-bottom: 0.85rem;
     }
-    .section-label::before {
+    /* .section-label::before {
       content: ''; width: 22px; height: 2px; background: var(--blue); border-radius: 2px;
-    }
+    } */
     .section-title {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 800;
