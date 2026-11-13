@@ -15,6 +15,18 @@
   --border:     #e4dfd5;
   --border-subtle: rgba(228, 223, 213, 0.7);
 
+  /* Semantic UI Tokens */
+  --btn-ink-bg:       #0c0f1d;
+  --btn-ink-text:     #ffffff;
+  --btn-outline-bg:   rgba(255, 255, 255, 0.7);
+  --btn-outline-text: #0c0f1d;
+  --btn-outline-hover: #ffffff;
+  --nav-bg:           rgba(250, 248, 245, 0.82);
+  --nav-scrolled-bg:  rgba(250, 248, 245, 0.95);
+  --chip-bg:          rgba(255, 255, 255, 0.94);
+  --chip-text:        #0c0f1d;
+  --pill-bg:          #ffffff;
+
   /* Brand — matched to Akademia desktop app */
   --blue:       #2563eb;
   --blue-dk:    #1d4ed8;
@@ -60,6 +72,18 @@
   --card:       #12162a;
   --border:     #1e2540;
   --border-subtle: rgba(30, 37, 64, 0.7);
+
+  /* Semantic UI Tokens for Dark Theme */
+  --btn-ink-bg:       var(--blue);
+  --btn-ink-text:     #ffffff;
+  --btn-outline-bg:   rgba(255, 255, 255, 0.08);
+  --btn-outline-text: #f8fafc;
+  --btn-outline-hover: #1e2645;
+  --nav-bg:           rgba(8, 11, 22, 0.88);
+  --nav-scrolled-bg:  rgba(8, 11, 22, 0.96);
+  --chip-bg:          rgba(18, 22, 42, 0.94);
+  --chip-text:        #f8fafc;
+  --pill-bg:          #161b32;
 
   --shadow-sm:  0 4px 18px rgba(0, 0, 0, 0.4);
   --shadow-md:  0 16px 44px rgba(0, 0, 0, 0.55);
@@ -154,7 +178,7 @@ body {
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(250, 248, 245, 0.78);
+  background: var(--nav-bg);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid transparent;
@@ -168,8 +192,8 @@ body {
 
 .nav-main.scrolled {
   border-bottom-color: var(--border);
-  background: rgba(250, 248, 245, 0.92);
-  box-shadow: 0 8px 32px rgba(12, 15, 29, 0.04);
+  background: var(--nav-scrolled-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 .nav-logo {
